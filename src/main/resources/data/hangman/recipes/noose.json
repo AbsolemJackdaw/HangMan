@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " l",
+    "l "
+  ],
+  "key": {
+    "l": {
+      "item": "minecraft:lead"
+    }
+  },
+  "result": {
+    "item": "hangman:noose",
+    "count": 1
+  }
+}
