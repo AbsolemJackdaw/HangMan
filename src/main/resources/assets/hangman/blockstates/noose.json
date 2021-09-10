@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hangman:block/noose",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hangman:block/noose"
+    },
+    "facing=south": {
+      "model": "hangman:block/noose",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hangman:block/noose",
+      "y": 270
+    }
+  }
+}
