@@ -1,6 +1,7 @@
 {
 	"textures": {
-		"texture": "hangman:block/noose"
+		"texture": "hangman:block/noose",
+		"particle": "hangman:block/noose"
 	},
 	"elements": [
 		{
