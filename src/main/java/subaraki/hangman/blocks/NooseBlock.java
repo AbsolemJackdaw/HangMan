@@ -6,10 +6,12 @@ import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -29,6 +31,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import subaraki.hangman.entity.CameraDummy;
 import subaraki.hangman.entity.HangEntityDummy;
 
+import java.util.List;
+
 public class NooseBlock extends Block {
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -36,6 +40,9 @@ public class NooseBlock extends Block {
     protected static final VoxelShape SHAPE_SIDE = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 16.0D, 12.0D);
     protected static final VoxelShape COLLISION = Block.box(5.0D, -1.0D, 7.0D, 11.0D, 6.0D, 9.0D);
     protected static final VoxelShape COLLISION_SIDE = Block.box(7.0D, -1.0D, 5.0D, 9.0D, 6.0D, 11.0D);
+
+    public static List<Class<? extends LivingEntity>> unhungableEntities = List.of(Bat.class, Bee.class, Blaze.class, EnderDragon.class, Endermite.class, Ghast.class, Giant.class, Ravager.class, Shulker.class, Silverfish.class, Slime.class, TropicalFish.class, Vex.class, WitherBoss.class,
+    /* Debatable mobs: */ Cod.class, Dolphin.class, ElderGuardian.class, GlowSquid.class, Guardian.class, Phantom.class, Pufferfish.class, Rabbit.class, Salmon.class, Squid.class, Strider.class);
 
     public NooseBlock() {
         super(BlockBehaviour.Properties.of(Material.CLOTH_DECORATION).noOcclusion().strength(1.0f).sound(SoundType.WOOL).isValidSpawn(NooseBlock::never).isRedstoneConductor(NooseBlock::never).isSuffocating(NooseBlock::never).isViewBlocking(NooseBlock::never));
@@ -131,7 +138,7 @@ public class NooseBlock extends Block {
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide()) {
-            if (entity instanceof LivingEntity living && !(entity instanceof Player)) {
+            if (entity instanceof LivingEntity living && !(entity instanceof Player) && !unhungableEntities.contains(entity.getClass())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
                     HangEntityDummy noose = new HangEntityDummy(level, pos);
                     if (living instanceof Mob mob)
