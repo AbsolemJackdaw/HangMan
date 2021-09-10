@@ -3,12 +3,13 @@ package subaraki.hangman.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -25,7 +26,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.util.FakePlayer;
 import subaraki.hangman.entity.CameraDummy;
 import subaraki.hangman.entity.HangEntityDummy;
 
@@ -34,8 +34,8 @@ public class NooseBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 6.0D, 12.0D, 16.0D, 10.0D);
     protected static final VoxelShape SHAPE_SIDE = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 16.0D, 12.0D);
-    protected static final VoxelShape COLLISION = Block.box(5.0D, 2.0D, 7.0D, 11.0D, 6.0D, 9.0D);
-    protected static final VoxelShape COLLISION_SIDE = Block.box(7.0D, 2.0D, 5.0D, 9.0D, 6.0D, 11.0D);
+    protected static final VoxelShape COLLISION = Block.box(5.0D, -1.0D, 7.0D, 11.0D, 6.0D, 9.0D);
+    protected static final VoxelShape COLLISION_SIDE = Block.box(7.0D, -1.0D, 5.0D, 9.0D, 6.0D, 11.0D);
 
     public NooseBlock() {
         super(BlockBehaviour.Properties.of(Material.CLOTH_DECORATION).noOcclusion().strength(1.0f).sound(SoundType.WOOL).isValidSpawn(NooseBlock::never).isRedstoneConductor(NooseBlock::never).isSuffocating(NooseBlock::never).isViewBlocking(NooseBlock::never));
@@ -92,20 +92,17 @@ public class NooseBlock extends Block {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (!level.isEmptyBlock(pos.above()))
-            return true;
-        return false;
+        return !level.isEmptyBlock(pos.above());
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
 
-            player.hurt(DamageSource.GENERIC, 1);
             HangEntityDummy nooseEntity = new HangEntityDummy(level, pos);
-            level.addFreshEntity(nooseEntity);
             player.startRiding(nooseEntity);
             level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
+            level.addFreshEntity(nooseEntity);
 
             BlockPos cameraPos =
                     switch (state.getValue(FACING)) {
@@ -115,38 +112,36 @@ public class NooseBlock extends Block {
                         case SOUTH -> pos.south(3).below(1);
                         default -> pos.below(1).north(3);
                     };
-            if (level instanceof ServerLevel server) {
-//                FakePlayer camera = new FakePlayer(server, player.getGameProfile()) {
-//                    @Override
-//                    public void tick() {
-//                        super.tick();
-//                        this.setHealth(player.getHealth());
-//                        if (this.getHealth() <= 0) {
-//                            this.getInventory().clearContent();
-//                            this.kill();
-//                        }
-//                    }
-//                };
-                CameraDummy camera = new CameraDummy(level, pos);
-//                camera.setHealth(player.getHealth());
-//                for (int i = 0; i < 9; i++)
-//                    camera.getInventory().setItem(i, player.getInventory().getItem(i));
-                camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY() + 0.5, cameraPos.getZ() + 0.5);
-                camera.setXRot(-10f);
-                float yRotation = switch (state.getValue(FACING)) {
-                    case EAST -> 90;
-                    case WEST -> -90;
-                    case SOUTH -> 180;
-                    default -> 0;
-                };
-                camera.setYRot(yRotation);
-                level.addFreshEntity(camera);
-                serverPlayer.connection.send(new ClientboundSetCameraPacket(camera));
-            }
-
-
+            CameraDummy camera = new CameraDummy(level, pos);
+            camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY(), cameraPos.getZ() + 0.5);
+            camera.setXRot(-20f);
+            float yRotation = switch (state.getValue(FACING)) {
+                case EAST -> 90;
+                case WEST -> -90;
+                case SOUTH -> 180;
+                default -> 0;
+            };
+            camera.setYRot(yRotation);
+            level.addFreshEntity(camera);
+            serverPlayer.connection.send(new ClientboundSetCameraPacket(camera));
         }
-        return InteractionResult.PASS;
+        return InteractionResult.CONSUME;
+    }
 
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (!level.isClientSide()) {
+            if (entity instanceof LivingEntity living && !(entity instanceof Player)) {
+                if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
+                    HangEntityDummy noose = new HangEntityDummy(level, pos);
+                    if (living instanceof Mob mob)
+                        mob.setPersistenceRequired();
+                    living.startRiding(noose, false);
+                    noose.positionRider(living);
+                    level.addFreshEntity(noose);
+                    level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
+                }
+            }
+        }
     }
 }
