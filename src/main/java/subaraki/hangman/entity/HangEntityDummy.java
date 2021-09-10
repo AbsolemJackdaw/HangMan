@@ -1,12 +1,11 @@
 package subaraki.hangman.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -102,7 +101,8 @@ public class HangEntityDummy extends Entity {
     public double getPassengersRidingOffset() {
         if (!this.getPassengers().isEmpty()) {
             Entity e = this.getPassengers().get(0);
-            return -e.getEyeHeight() + 0.25d;
+            if (!(e instanceof Player))
+                return -e.getEyeHeight();
         }
 
         return -1.37D;
@@ -129,18 +129,20 @@ public class HangEntityDummy extends Entity {
                 if (e instanceof LivingEntity living) {
                     if (this.level.getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
                         BlockState state = level.getBlockState(getOnPos());
-                        living.setYBodyRot(state.getValue(NooseBlock.FACING).toYRot());
-                        living.setYHeadRot(living.yBodyRot);
+                        Direction dir = state.getValue(NooseBlock.FACING);
+                        living.setYBodyRot(dir.toYRot());
+                        living.setYHeadRot(dir.toYRot());
+                        living.setYRot(dir.toYRot());
                     }
                     living.setXRot(50);
                     isUndead = living.getMobType() == MobType.UNDEAD;
 
                 }
                 if (random.nextInt(10) == 0 && !isUndead)
-                    e.hurt(HangMan.HANGING, e instanceof Player ? 5 : 2);
-                if (random.nextInt(20) == 0)
-                    if (e instanceof Player)
-                        level.playLocalSound(getX(), getY(), getZ(), SoundEvents.DROWNED_AMBIENT_WATER, SoundSource.PLAYERS, 1.0f, 1.0f, false);
+                    e.hurt(HangMan.HANGING, e instanceof Player ? 0 : 2);
+//                if (random.nextInt(20) == 0)
+//                    if (e instanceof Player)
+//                        level.playLocalSound(getX(), getY(), getZ(), SoundEvents.DROWNED_AMBIENT_WATER, SoundSource.PLAYERS, 1.0f, 1.0f, false);
             }
         }
     }
