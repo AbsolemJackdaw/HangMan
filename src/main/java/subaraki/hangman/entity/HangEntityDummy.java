@@ -102,10 +102,10 @@ public class HangEntityDummy extends Entity {
         if (!this.getPassengers().isEmpty()) {
             Entity e = this.getPassengers().get(0);
             if (!(e instanceof Player))
-                return -e.getEyeHeight();
+                return -e.getEyeHeight() + 0.35;
         }
 
-        return -1.37D;
+        return -1.42D;
     }
 
     @Override
