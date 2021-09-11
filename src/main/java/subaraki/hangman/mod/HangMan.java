@@ -13,7 +13,7 @@ import subaraki.hangman.registry.HangManItems;
 public class HangMan {
     public static final String MODID = "hangman";
     public static final Logger LOG = LogManager.getLogger();
-    public static final DamageSource HANGING = (new DamageSource("hanging")).bypassArmor().bypassInvul();
+    public static final DamageSource HANGING = (new DamageSource("hanging")).bypassArmor();
 
     public HangMan() {
         HangManBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
