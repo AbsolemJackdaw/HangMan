@@ -62,8 +62,10 @@ public class HangEntityDummy extends Entity {
         if (!level.isClientSide()) {
             if (this.getPassengers().isEmpty()) {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
-                if (this.level.getBlockState(logPos).getBlock() instanceof NooseBlock) {
-                    level.setBlock(logPos, level.getBlockState(logPos).setValue(NooseBlock.OCCUPIED, false), 3);
+                //for some godforsaken reason logPos is returning the pos above it, even if its set correctly
+                //when making the new entity
+                if (this.level.getBlockState(logPos.below()).getBlock() instanceof NooseBlock) {
+                    level.setBlock(logPos.below(), level.getBlockState(logPos.below()).setValue(NooseBlock.OCCUPIED, false), 3);
                 }
                 this.kill(); //remove this entity
 
@@ -102,10 +104,10 @@ public class HangEntityDummy extends Entity {
         if (!this.getPassengers().isEmpty()) {
             Entity e = this.getPassengers().get(0);
             if (!(e instanceof Player))
-                return -e.getEyeHeight();
+                return -e.getEyeHeight() + 0.35;
         }
 
-        return -1.37D;
+        return -1.42D;
     }
 
     @Override
@@ -134,7 +136,7 @@ public class HangEntityDummy extends Entity {
                         living.setYHeadRot(dir.toYRot());
                         living.setYRot(dir.toYRot());
                     }
-                    living.setXRot(50);
+                    living.setXRot(45);
                     isUndead = living.getMobType() == MobType.UNDEAD;
 
                 }
