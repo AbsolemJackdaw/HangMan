@@ -18,7 +18,7 @@ public class HangManEntity {
 
     public static final RegistryObject<EntityType<HangEntityDummy>> HANG_DUMMY = ENTITIES.register("hang_dummy",
             () -> EntityType.Builder.<HangEntityDummy>of(HangEntityDummy::new, MobCategory.MISC)
-                    .setTrackingRange(256).setUpdateInterval(20).noSave().noSummon().sized(0.001F, 0.001F).build(HangMan.MODID + ":hang_dummy"));
+                    .setTrackingRange(256).setUpdateInterval(20).noSummon().sized(0.001F, 0.001F).build(HangMan.MODID + ":hang_dummy"));
 
 
 }

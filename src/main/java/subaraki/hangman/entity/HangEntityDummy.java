@@ -40,12 +40,10 @@ public class HangEntityDummy extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        System.out.println("save");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        System.out.println("load");
     }
 
     @Override
