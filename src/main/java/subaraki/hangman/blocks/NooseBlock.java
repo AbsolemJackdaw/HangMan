@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -93,6 +94,11 @@ public class NooseBlock extends Block {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return !level.isEmptyBlock(pos.above());
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction dir, BlockState toState, LevelAccessor access, BlockPos pos, BlockPos toPos) {
+        return !canSurvive(state, access, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, dir, toState, access, pos, toPos);
     }
 
     @Override
