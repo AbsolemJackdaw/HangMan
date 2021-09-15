@@ -1,0 +1,73 @@
+{
+  "hangable": [
+    {
+      "entity": "minecraft:skeleton",
+      "offset": "0.5"
+    },
+    {
+      "entity": "minecraft:zombie"
+    },
+    {
+      "entity": "minecraft:enderman",
+      "offset": "-0.1"
+    },
+    {
+      "entity": "minecraft:creeper",
+      "offset": "0"
+    },
+    {
+      "entity": "minecraft:wither_skeleton",
+      "offset": "0.6"
+    },
+    {
+      "entity": "minecraft:husk",
+      "offset": "0.25"
+    },
+    {
+      "entity": "minecraft:stray",
+      "offset": "0.5"
+    },
+    {
+      "entity": "minecraft:villager",
+      "offset": "-0.14"
+    },
+    {
+      "entity": "minecraft:zombie_villager"
+    },
+    {
+      "entity": "minecraft:wandering_trader",
+      "offset": "-0.14"
+    },
+    {
+      "entity": "minecraft:witch",
+      "offset": "0.30"
+    },
+    {
+      "entity": "minecraft:evoker"
+    },
+    {
+      "entity": "minecraft:pillager"
+    },
+    {
+      "entity": "minecraft:vindicator"
+    },
+    {
+      "entity": "minecraft:vex",
+      "offset": "-0.25"
+    },
+    {
+      "entity": "minecraft:piglin"
+    },
+    {
+      "entity": "minecraft:piglin_brute",
+      "offset": "0.25"
+    },
+    {
+      "entity": "minecraft:blaze",
+      "offset": "-0.1"
+    },
+    {
+      "entity": "minecraft:drowned"
+    }
+  ]
+}

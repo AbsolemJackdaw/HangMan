@@ -17,19 +17,16 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import subaraki.hangman.blocks.NooseBlock;
 import subaraki.hangman.mod.HangMan;
 import subaraki.hangman.registry.HangManEntity;
+import subaraki.hangman.util.EntityExceptionListReader;
 
 public class HangEntityDummy extends Entity {
 
-    private final BlockPos logPos;
-
     public HangEntityDummy(EntityType type, Level level) {
         super(type, level);
-        logPos = BlockPos.ZERO;
     }
 
     public HangEntityDummy(Level level, BlockPos pos) {
         super(HangManEntity.HANG_DUMMY.get(), level);
-        this.logPos = pos;
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
     }
@@ -62,8 +59,9 @@ public class HangEntityDummy extends Entity {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
                 //for some godforsaken reason logPos is returning the pos above it, even if its set correctly
                 //when making the new entity
-                if (this.level.getBlockState(logPos.below()).getBlock() instanceof NooseBlock) {
-                    level.setBlock(logPos.below(), level.getBlockState(logPos.below()).setValue(NooseBlock.OCCUPIED, false), 3);
+                BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
+                if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
+                    level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
                 }
                 this.kill(); //remove this entity
 
@@ -86,8 +84,9 @@ public class HangEntityDummy extends Entity {
 
     @Override
     public void onRemovedFromWorld() {
-        if (this.level.getBlockState(logPos).getBlock() instanceof NooseBlock) {
-            level.setBlock(logPos, level.getBlockState(logPos).setValue(NooseBlock.OCCUPIED, false), 3);
+        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
+        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
+            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
         }
         super.onRemovedFromWorld();
     }
@@ -101,8 +100,8 @@ public class HangEntityDummy extends Entity {
     public double getPassengersRidingOffset() {
         if (!this.getPassengers().isEmpty()) {
             Entity e = this.getPassengers().get(0);
-            if (!(e instanceof Player))
-                return -e.getEyeHeight() + 0.35;
+            if (!(e instanceof Player) && EntityExceptionListReader.has(e.getType()))
+                return -e.getEyeHeight() + EntityExceptionListReader.get(e.getType()).getOffset();
         }
 
         return -1.42D;
@@ -155,7 +154,7 @@ public class HangEntityDummy extends Entity {
                 BlockState state = level.getBlockState(getOnPos());
                 living.setYBodyRot(state.getValue(NooseBlock.FACING).toYRot());
                 living.setYHeadRot(living.yBodyRot);
-                living.setXRot(50);
+                living.setXRot(45);
             }
         }
     }
