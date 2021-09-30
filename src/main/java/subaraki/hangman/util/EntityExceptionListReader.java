@@ -26,7 +26,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = HangMan.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntityExceptionListReader extends SimplePreparableReloadListener<ArrayList<JsonObject>> {
 
-    private static HashMap<ResourceLocation, EntityHangException> mappedEntities = new HashMap<>();
+    private static final HashMap<ResourceLocation, EntityHangException> mappedEntities = new HashMap<>();
 
     @SubscribeEvent
     public static void registerReloadListener(AddReloadListenerEvent event) {

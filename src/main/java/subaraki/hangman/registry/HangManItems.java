@@ -11,6 +11,6 @@ import subaraki.hangman.mod.HangMan;
 public class HangManItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, HangMan.MODID);
 
-    public static final RegistryObject<Item> OAK_LOG_SEAT = ITEMS.register("noose",
+    public static final RegistryObject<Item> NOOSE = ITEMS.register("noose",
             () -> new BlockItem(HangManBlocks.NOOSE.get(), (new Item.Properties()).tab(CreativeModeTab.TAB_TOOLS)));
 }

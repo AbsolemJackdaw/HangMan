@@ -9,18 +9,15 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import subaraki.hangman.registry.HangManEntity;
 
-public class CameraDummy extends Entity {
+public class CameraPlayerOnNoose extends Entity {
 
-    private final BlockPos logPos;
 
-    public CameraDummy(EntityType type, Level level) {
+    public CameraPlayerOnNoose(EntityType type, Level level) {
         super(type, level);
-        logPos = BlockPos.ZERO;
     }
 
-    public CameraDummy(Level level, BlockPos pos) {
+    public CameraPlayerOnNoose(Level level, BlockPos pos) {
         super(HangManEntity.CAMERA.get(), level);
-        this.logPos = pos;
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         this.noPhysics = true;
     }

@@ -19,13 +19,13 @@ import subaraki.hangman.mod.HangMan;
 import subaraki.hangman.registry.HangManEntity;
 import subaraki.hangman.util.EntityExceptionListReader;
 
-public class HangEntityDummy extends Entity {
+public class NooseEntity extends Entity {
 
-    public HangEntityDummy(EntityType type, Level level) {
+    public NooseEntity(EntityType type, Level level) {
         super(type, level);
     }
 
-    public HangEntityDummy(Level level, BlockPos pos) {
+    public NooseEntity(Level level, BlockPos pos) {
         super(HangManEntity.HANG_DUMMY.get(), level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
@@ -57,8 +57,6 @@ public class HangEntityDummy extends Entity {
         if (!level.isClientSide()) {
             if (this.getPassengers().isEmpty()) {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
-                //for some godforsaken reason logPos is returning the pos above it, even if its set correctly
-                //when making the new entity
                 BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
                 if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
                     level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
@@ -137,6 +135,7 @@ public class HangEntityDummy extends Entity {
                     isUndead = living.getMobType() == MobType.UNDEAD;
 
                 }
+                //TODO config option player dmg and entity dmg
                 if (random.nextInt(10) == 0 && !isUndead)
                     e.hurt(HangMan.HANGING, e instanceof Player ? 0 : 2);
 //                if (random.nextInt(20) == 0)

@@ -27,8 +27,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import subaraki.hangman.entity.CameraDummy;
-import subaraki.hangman.entity.HangEntityDummy;
+import subaraki.hangman.entity.CameraPlayerOnNoose;
+import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.util.EntityExceptionListReader;
 
 public class NooseBlock extends Block {
@@ -48,7 +48,7 @@ public class NooseBlock extends Block {
         return false;
     }
 
-    public static Boolean never(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> type) {
+    private static Boolean never(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> type) {
         return false;
     }
 
@@ -106,7 +106,7 @@ public class NooseBlock extends Block {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
 
-            HangEntityDummy nooseEntity = new HangEntityDummy(level, pos);
+            NooseEntity nooseEntity = new NooseEntity(level, pos);
             player.startRiding(nooseEntity);
             level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
             level.addFreshEntity(nooseEntity);
@@ -119,7 +119,7 @@ public class NooseBlock extends Block {
                         case SOUTH -> pos.south(3).below(1);
                         default -> pos.below(1).north(3);
                     };
-            CameraDummy camera = new CameraDummy(level, pos);
+            CameraPlayerOnNoose camera = new CameraPlayerOnNoose(level, pos);
             camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY(), cameraPos.getZ() + 0.5);
             camera.setXRot(-20f);
             float yRotation = switch (state.getValue(FACING)) {
@@ -140,7 +140,7 @@ public class NooseBlock extends Block {
         if (!level.isClientSide()) {
             if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityExceptionListReader.has(entity.getType())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
-                    HangEntityDummy noose = new HangEntityDummy(level, pos);
+                    NooseEntity noose = new NooseEntity(level, pos);
                     if (living instanceof Mob mob)
                         mob.setPersistenceRequired();
                     living.startRiding(noose, false);
