@@ -15,9 +15,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import subaraki.hangman.blocks.NooseBlock;
+import subaraki.hangman.mod.ConfigData;
 import subaraki.hangman.mod.HangMan;
 import subaraki.hangman.registry.HangManEntity;
-import subaraki.hangman.util.EntityExceptionListReader;
+import subaraki.hangman.util.EntityHangableListReader;
 
 public class NooseEntity extends Entity {
 
@@ -98,8 +99,8 @@ public class NooseEntity extends Entity {
     public double getPassengersRidingOffset() {
         if (!this.getPassengers().isEmpty()) {
             Entity e = this.getPassengers().get(0);
-            if (!(e instanceof Player) && EntityExceptionListReader.has(e.getType()))
-                return -e.getEyeHeight() + EntityExceptionListReader.get(e.getType()).getOffset();
+            if (!(e instanceof Player) && EntityHangableListReader.has(e.getType()))
+                return -e.getEyeHeight() + EntityHangableListReader.get(e.getType()).offset();
         }
 
         return -1.42D;
@@ -135,12 +136,9 @@ public class NooseEntity extends Entity {
                     isUndead = living.getMobType() == MobType.UNDEAD;
 
                 }
-                //TODO config option player dmg and entity dmg
-                if (random.nextInt(10) == 0 && !isUndead)
-                    e.hurt(HangMan.HANGING, e instanceof Player ? 0 : 2);
-//                if (random.nextInt(20) == 0)
-//                    if (e instanceof Player)
-//                        level.playLocalSound(getX(), getY(), getZ(), SoundEvents.DROWNED_AMBIENT_WATER, SoundSource.PLAYERS, 1.0f, 1.0f, false);
+                if (random.nextInt(10) == 0 && (ConfigData.canHurtPlayer && e instanceof Player || !isUndead && ConfigData.canHurtEntity && !(e instanceof Player))) {
+                    e.hurt(HangMan.HANGING, e instanceof Player ? ConfigData.playerDMG : ConfigData.entityDMG);
+                }
             }
         }
     }

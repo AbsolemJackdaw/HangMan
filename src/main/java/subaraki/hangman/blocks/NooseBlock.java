@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.entity.NooseEntity;
-import subaraki.hangman.util.EntityExceptionListReader;
+import subaraki.hangman.util.EntityHangableListReader;
 
 public class NooseBlock extends Block {
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
@@ -138,7 +138,7 @@ public class NooseBlock extends Block {
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide()) {
-            if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityExceptionListReader.has(entity.getType())) {
+            if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityHangableListReader.has(entity.getType())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
                     NooseEntity noose = new NooseEntity(level, pos);
                     if (living instanceof Mob mob)

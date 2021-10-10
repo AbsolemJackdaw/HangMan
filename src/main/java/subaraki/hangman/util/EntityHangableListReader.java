@@ -24,16 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = HangMan.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class EntityExceptionListReader extends SimplePreparableReloadListener<ArrayList<JsonObject>> {
+public class EntityHangableListReader extends SimplePreparableReloadListener<ArrayList<JsonObject>> {
 
-    private static final HashMap<ResourceLocation, EntityHangException> mappedEntities = new HashMap<>();
+    private static final HashMap<ResourceLocation, EntityHangable> mappedEntities = new HashMap<>();
 
     @SubscribeEvent
     public static void registerReloadListener(AddReloadListenerEvent event) {
-        event.addListener(new EntityExceptionListReader());
+        event.addListener(new EntityHangableListReader());
     }
 
-    public static EntityHangException get(EntityType<?> entityType) {
+    public static EntityHangable get(EntityType<?> entityType) {
 
         ResourceLocation resLoc = Registry.ENTITY_TYPE.getKey(entityType);
         if (mappedEntities.containsKey(resLoc))
@@ -98,14 +98,11 @@ public class EntityExceptionListReader extends SimplePreparableReloadListener<Ar
                         if (jsonObject.has("offset")) {
                             offset = jsonObject.get("offset").getAsDouble();
                         }
-
-                        mappedEntities.put(new ResourceLocation(entity), new EntityHangException(entity, offset));
+                        mappedEntities.put(new ResourceLocation(entity), new EntityHangable(entity, offset));
                     }
                 }
             };
             run.run();
         }
     }
-
-
 }
