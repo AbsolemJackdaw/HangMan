@@ -38,4 +38,15 @@ public class CameraPlayerOnNoose extends Entity {
     public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
+
+    @Override
+    public boolean isInvulnerable() {
+        return true;
+    }
+
+    public boolean isAttackable() {
+        return false;
+    }
+
+
 }
