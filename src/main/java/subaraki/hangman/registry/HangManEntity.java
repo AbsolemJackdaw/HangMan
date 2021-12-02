@@ -2,9 +2,9 @@ package subaraki.hangman.registry;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.mod.HangMan;
