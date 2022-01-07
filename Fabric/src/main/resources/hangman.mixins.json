@@ -9,10 +9,10 @@
     "ServerEntityRemoved"
   ],
   "client": [
-    "OnClientEntityRemoved",
-    "DontHitYourself",
-    "DisableFirstPersonArm",
     "DisabelOverlayOnHanging",
+    "DisableFirstPersonArm",
+    "DontHitYourself",
+    "OnClientEntityRemoved",
     "PatchLevelRenderCameraRendering"
   ],
   "injectors": {
