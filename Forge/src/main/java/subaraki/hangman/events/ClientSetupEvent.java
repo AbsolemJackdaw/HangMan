@@ -2,8 +2,8 @@ package subaraki.hangman.events;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -19,8 +19,12 @@ public class ClientSetupEvent {
     public static void clientsetup(FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(HangManBlocks.NOOSE.get(), RenderType.cutout());
 
-        EntityRenderers.register(HangManEntity.HANG_DUMMY.get(), EmptyEntityRenderer::new);
-        EntityRenderers.register(HangManEntity.CAMERA.get(), EmptyEntityRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void reg(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(HangManEntity.HANG_DUMMY.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(HangManEntity.CAMERA.get(), EmptyEntityRenderer::new);
 
     }
 }

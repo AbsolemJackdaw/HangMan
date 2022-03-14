@@ -13,16 +13,16 @@ import subaraki.hangman.registry.HangManItems;
 public class HangMan extends HangManCommon {
 
     public HangMan() {
-        HangManBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         HangManItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        HangManBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         HangManEntity.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modConfig);
-        NOOSE = HangManEntity.NOOSE_TYPE;
-        CAMERA = HangManEntity.CAMERA_TYPE;
+
+
     }
 
     public void modConfig(ModConfigEvent event) {
