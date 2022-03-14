@@ -1,4 +1,4 @@
-package subaraki.registry;
+package subaraki.hangman.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

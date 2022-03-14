@@ -1,4 +1,4 @@
-package subaraki.registry;
+package subaraki.hangman.registry;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Registry;

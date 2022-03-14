@@ -1,4 +1,4 @@
-package subaraki.mixins;
+package subaraki.hangman.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

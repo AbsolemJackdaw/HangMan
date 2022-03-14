@@ -1,4 +1,4 @@
-package subaraki.mixins;
+package subaraki.hangman.mixins;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,8 +9,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import subaraki.hangman.entity.NooseEntity;
 
-@Mixin(targets = "net.minecraft.server.level.ServerLevel$EntityCallbacks")
-public class ServerEntityRemoved {
+@Environment(EnvType.CLIENT)
+@Mixin(targets = "net.minecraft.client.multiplayer.ClientLevel$EntityCallbacks")
+public class OnClientEntityRemoved {
 
     @Inject(method = "onTrackingEnd(Lnet/minecraft/world/entity/Entity;)V", at = @At("TAIL"))
     public void removestuff(Entity entity, CallbackInfo ci) {

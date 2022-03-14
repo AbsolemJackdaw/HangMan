@@ -1,13 +1,12 @@
-package subaraki.mod;
+package subaraki.hangman.mod;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 import subaraki.hangman.entity.EmptyEntityRenderer;
-import subaraki.hangman.mod.HangManCommon;
-import subaraki.registry.HangManBlock;
-import subaraki.registry.HangManEntity;
+import subaraki.hangman.registry.HangManBlock;
+import subaraki.hangman.registry.HangManEntity;
 
 public class HangManClient extends HangManCommon implements ClientModInitializer {
     @Override

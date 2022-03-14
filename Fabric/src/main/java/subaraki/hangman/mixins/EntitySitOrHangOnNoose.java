@@ -1,4 +1,4 @@
-package subaraki.mixins;
+package subaraki.hangman.mixins;
 
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,4 +1,4 @@
-package subaraki.mixins;
+package subaraki.hangman.mixins;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
