@@ -107,9 +107,9 @@ public class NooseBlock extends Block {
             if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
 
                 NooseEntity nooseEntity = new NooseEntity(level, pos);
+                level.addFreshEntity(nooseEntity);
                 player.startRiding(nooseEntity);
                 level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
-                level.addFreshEntity(nooseEntity);
 
                 BlockPos cameraPos =
                         switch (state.getValue(FACING)) {
@@ -142,11 +142,11 @@ public class NooseBlock extends Block {
             if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityHangableListReader.has(entity.getType())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
                     NooseEntity noose = new NooseEntity(level, pos);
-                    if (living instanceof Mob mob)
+                    if (living instanceof Mob mob && !mob.isPersistenceRequired())
                         mob.setPersistenceRequired();
+                    level.addFreshEntity(noose);
                     living.startRiding(noose);
                     noose.positionRider(living);
-                    level.addFreshEntity(noose);
                     level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
                 }
             }
