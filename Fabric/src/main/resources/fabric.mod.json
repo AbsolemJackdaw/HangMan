@@ -16,11 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "subaraki.mod.HangMan"
+      "subaraki.hangman.mod.HangMan"
     ],
     "client": [
-      "subaraki.mod.HangManClient"
-
+      "subaraki.hangman.mod.HangManClient"
     ]
   },
   "mixins": [
