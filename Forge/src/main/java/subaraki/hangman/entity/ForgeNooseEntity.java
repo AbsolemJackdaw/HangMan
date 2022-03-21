@@ -11,8 +11,8 @@ public class ForgeNooseEntity extends NooseEntity {
 
     @Override
     public void onRemovedFromWorld() {
-        super.whenRemovedFromWorld();
         super.onRemovedFromWorld();
+        super.whenRemovedFromWorld();
     }
 
     @Override
