@@ -5,14 +5,14 @@ import net.minecraft.world.level.Level;
 
 public class ForgeNooseEntity extends NooseEntity {
 
-    public ForgeNooseEntity(EntityType type, Level level) {
+    public ForgeNooseEntity(EntityType<?> type, Level level) {
         super(type, level);
     }
-
+    
     @Override
-    public void onRemovedFromWorld() {
-        super.onRemovedFromWorld();
-        super.whenRemovedFromWorld();
+    public void remove(RemovalReason p_146834_) {
+    	super.remove(p_146834_);
+    	super.whenRemovedFromWorld();
     }
 
     @Override
