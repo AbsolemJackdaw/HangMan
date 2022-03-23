@@ -83,10 +83,12 @@ public class NooseEntity extends Entity {
     //used in fabric event
     //used to complete forge event
     public void whenRemovedFromWorld() {
-        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
-        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
-        }
+        //this code makes the world lock up on exit. restart is requiered to re enter world
+        //do not uncomment
+//        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
+//        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
+//            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+//        }
     }
 
     //used in Forge's shouldRiderSit method
