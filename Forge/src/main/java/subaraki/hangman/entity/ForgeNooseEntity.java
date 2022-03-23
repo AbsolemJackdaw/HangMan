@@ -10,12 +10,6 @@ public class ForgeNooseEntity extends NooseEntity {
     }
 
     @Override
-    public void onRemovedFromWorld() {
-        super.onRemovedFromWorld();
-        super.whenRemovedFromWorld();
-    }
-
-    @Override
     public boolean shouldRiderSit() {
         return shouldHangedEntitySit();
     }

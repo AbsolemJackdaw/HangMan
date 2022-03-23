@@ -4,14 +4,12 @@
   "package": "subaraki.hangman.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "EntitySitOrHangOnNoose",
-    "ServerEntityRemoved"
+    "EntitySitOrHangOnNoose"
   ],
   "client": [
     "DisabelOverlayOnHanging",
     "DisableFirstPersonArm",
     "DontHitYourself",
-    "OnClientEntityRemoved",
     "PatchLevelRenderCameraRendering"
   ],
   "injectors": {

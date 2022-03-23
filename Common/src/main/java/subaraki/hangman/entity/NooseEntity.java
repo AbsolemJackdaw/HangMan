@@ -71,8 +71,9 @@ public class NooseEntity extends Entity {
     }
 
     @Override
-    public void remove(RemovalReason p_146834_) {
-        super.remove(p_146834_);
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        whenRemoved();
     }
 
     @Override
@@ -80,15 +81,16 @@ public class NooseEntity extends Entity {
         super.kill();
     }
 
-    //used in fabric event
-    //used to complete forge event
-    public void whenRemovedFromWorld() {
-        //this code makes the world lock up on exit. restart is requiered to re enter world
-        //do not uncomment
-//        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
-//        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-//            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
-//        }
+    /**
+     * Called in {@link Entity#remove(RemovalReason)} to reset block's vacancy.
+     * Do not call in Forge's onEntityRemovedFromWorld because it will cause a Concurrent Modification exception
+     * when saving chunks. (on dimension leave or worl exit)
+     */
+    public void whenRemoved() {
+        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
+        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
+            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+        }
     }
 
     //used in Forge's shouldRiderSit method
