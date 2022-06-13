@@ -1,5 +1,6 @@
 package subaraki.hangman.util;
 
+
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
@@ -9,6 +10,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import subaraki.hangman.config.ConfigReader;
 import subaraki.hangman.mod.HangManCommon;
 
 import java.io.BufferedReader;
@@ -76,20 +78,25 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
 
     @Override
     protected void apply(ArrayList<JsonObject> jsonFiles, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+        ConfigReader.reloadServer();
         if (!jsonFiles.isEmpty()) {
 
             Runnable run = () -> {
-                for (JsonObject jsonFile : jsonFiles) {
-                    JsonArray array = jsonFile.getAsJsonArray("hangable");
+                for (JsonObject the_file : jsonFiles) {
+                    JsonArray array = the_file.getAsJsonArray("hangable");
                     for (int i = 0; i < array.size(); i++) {
                         JsonObject jsonObject = array.get(i).getAsJsonObject();
 
                         String entity = jsonObject.get("entity").getAsString();
                         double offset = 0.35d;
+                        boolean dmg = true;
                         if (jsonObject.has("offset")) {
                             offset = jsonObject.get("offset").getAsDouble();
                         }
-                        mappedEntities.put(new ResourceLocation(entity), new EntityHangable(entity, offset));
+                        if (jsonObject.has("takesDamage")) {
+                            dmg = jsonObject.get("takesDamage").getAsBoolean();
+                        }
+                        mappedEntities.put(new ResourceLocation(entity), new EntityHangable(entity, offset, dmg));
                     }
                 }
             };

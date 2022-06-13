@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import subaraki.hangman.blocks.NooseBlock;
+import subaraki.hangman.mod.CommonConfigData;
 import subaraki.hangman.mod.HangManCommon;
 import subaraki.hangman.util.EntityHangableListReader;
 
@@ -140,10 +141,12 @@ public class NooseEntity extends Entity {
                     isUndead = living.getMobType() == MobType.UNDEAD;
 
                 }
-                //TODO
-//                if (random.nextInt(10) == 0 && (ConfigData.canHurtPlayer && e instanceof Player || !isUndead && ConfigData.canHurtEntity && !(e instanceof Player))) {
-//                    e.hurt(HangManCommon.HANGING, e instanceof Player ? ConfigData.playerDMG : ConfigData.entityDMG);
-//                }
+
+                if (!e.hurtMarked &&
+                        ((CommonConfigData.canHurtPlayer && e instanceof Player ||
+                                CommonConfigData.canHurtEntity && EntityHangableListReader.has(e.getType()) && EntityHangableListReader.get(e.getType()).takesDamage()))) {
+                    e.hurt(HangManCommon.HANGING, e instanceof Player ? CommonConfigData.playerDMG : CommonConfigData.entityDMG);
+                }
             }
         }
     }

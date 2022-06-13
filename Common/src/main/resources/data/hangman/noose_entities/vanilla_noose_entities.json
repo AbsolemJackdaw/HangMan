@@ -2,10 +2,12 @@
   "hangable": [
     {
       "entity": "minecraft:skeleton",
-      "offset": "0.5"
+      "offset": "0.5",
+      "takesDamage": false
     },
     {
-      "entity": "minecraft:zombie"
+      "entity": "minecraft:zombie",
+      "takesDamage": false
     },
     {
       "entity": "minecraft:enderman",
@@ -17,22 +19,26 @@
     },
     {
       "entity": "minecraft:wither_skeleton",
-      "offset": "0.6"
+      "offset": "0.6",
+      "takesDamage": false
     },
     {
       "entity": "minecraft:husk",
-      "offset": "0.25"
+      "offset": "0.25",
+      "takesDamage": false
     },
     {
       "entity": "minecraft:stray",
-      "offset": "0.5"
+      "offset": "0.5",
+      "takesDamage": false
     },
     {
       "entity": "minecraft:villager",
       "offset": "-0.14"
     },
     {
-      "entity": "minecraft:zombie_villager"
+      "entity": "minecraft:zombie_villager",
+      "takesDamage": false
     },
     {
       "entity": "minecraft:wandering_trader",
@@ -67,7 +73,8 @@
       "offset": "-0.1"
     },
     {
-      "entity": "minecraft:drowned"
+      "entity": "minecraft:drowned",
+      "takesDamage": false
     }
   ]
 }

@@ -1,17 +1,20 @@
 {
   "variants": {
-    "facing=east": {
+    "attached=true": {
+      "model": "hangman:block/rope"
+    },
+    "attached=false,facing=east": {
       "model": "hangman:block/noose",
       "y": 90
     },
-    "facing=north": {
+    "attached=false,facing=north": {
       "model": "hangman:block/noose"
     },
-    "facing=south": {
+    "attached=false,facing=south": {
       "model": "hangman:block/noose",
       "y": 180
     },
-    "facing=west": {
+    "attached=false,facing=west": {
       "model": "hangman:block/noose",
       "y": 270
     }

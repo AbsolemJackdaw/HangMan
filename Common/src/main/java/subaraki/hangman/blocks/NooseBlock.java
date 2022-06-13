@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.entity.NooseEntity;
@@ -33,14 +34,20 @@ import subaraki.hangman.util.EntityHangableListReader;
 public class NooseBlock extends Block {
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 6.0D, 12.0D, 16.0D, 10.0D);
-    protected static final VoxelShape SHAPE_SIDE = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 16.0D, 12.0D);
+    public static final BooleanProperty ATTACHED = BlockStateProperties.ATTACHED;
+
+    protected static final VoxelShape SHAPE_ATTACHED = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+    protected static final VoxelShape BASE_SHAPE = Block.box(4.0D, 0.0D, 7.0D, 12.0D, 8.0D, 9.0D);
+    protected static final VoxelShape BASE_SHAPE_SIDE = Block.box(7.0D, 0.0D, 4.0D, 9.0D, 8.0D, 12.0D);
+    protected static final VoxelShape KNOT = Block.box(6.5D, 8.0D, 6.5D, 9.5D, 11.0D, 9.5D);
+    protected static final VoxelShape SHAPE = Shapes.or(BASE_SHAPE, KNOT, SHAPE_ATTACHED);
+    protected static final VoxelShape SHAPE_SIDE = Shapes.or(BASE_SHAPE_SIDE, KNOT, SHAPE_ATTACHED);
     protected static final VoxelShape COLLISION = Block.box(5.0D, -1.0D, 7.0D, 11.0D, 6.0D, 9.0D);
     protected static final VoxelShape COLLISION_SIDE = Block.box(7.0D, -1.0D, 5.0D, 9.0D, 6.0D, 11.0D);
 
     public NooseBlock() {
         super(Properties.of(Material.CLOTH_DECORATION).noOcclusion().strength(1.0f).sound(SoundType.WOOL).isValidSpawn(NooseBlock::never).isRedstoneConductor(NooseBlock::never).isSuffocating(NooseBlock::never).isViewBlocking(NooseBlock::never));
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OCCUPIED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OCCUPIED, false).setValue(ATTACHED, false));
     }
 
     private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
@@ -53,17 +60,17 @@ public class NooseBlock extends Block {
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? COLLISION : COLLISION_SIDE;
+        return state.getValue(ATTACHED) ? SHAPE_ATTACHED : state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? COLLISION : COLLISION_SIDE;
     }
 
     @Override
     public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? SHAPE : SHAPE_SIDE;
+        return state.getValue(ATTACHED) ? SHAPE_ATTACHED : state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? SHAPE : SHAPE_SIDE;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? SHAPE : SHAPE_SIDE;
+        return state.getValue(ATTACHED) ? SHAPE_ATTACHED : state.getValue(FACING) == Direction.NORTH || state.getValue(FACING) == Direction.SOUTH ? SHAPE : SHAPE_SIDE;
     }
 
     @Override
@@ -83,7 +90,7 @@ public class NooseBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateDef) {
-        stateDef.add(FACING, OCCUPIED);
+        stateDef.add(FACING, OCCUPIED, ATTACHED);
     }
 
     @Override
@@ -97,8 +104,12 @@ public class NooseBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction dir, BlockState toState, LevelAccessor access, BlockPos pos, BlockPos toPos) {
-        return !canSurvive(state, access, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, dir, toState, access, pos, toPos);
+    public BlockState updateShape(BlockState receivingState, Direction dir, BlockState fromState, LevelAccessor access, BlockPos receivingPos, BlockPos fromPos) {
+        if (fromState.getBlock() instanceof NooseBlock && dir.equals(Direction.DOWN)) {
+            return receivingState.setValue(ATTACHED, true);
+        } else if (fromState.isAir() && receivingState.getValue(ATTACHED))
+            return receivingState.setValue(ATTACHED, false);
+        return !canSurvive(receivingState, access, receivingPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(receivingState, dir, fromState, access, receivingPos, fromPos);
     }
 
     @Override
@@ -140,7 +151,7 @@ public class NooseBlock extends Block {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide()) {
             if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityHangableListReader.has(entity.getType())) {
-                if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED)) {
+                if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED) && !state.getValue(ATTACHED)) {
                     NooseEntity noose = new NooseEntity(level, pos);
                     if (living instanceof Mob mob && !mob.isPersistenceRequired())
                         mob.setPersistenceRequired();
