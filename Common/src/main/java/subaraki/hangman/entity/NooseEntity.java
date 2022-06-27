@@ -2,6 +2,7 @@ package subaraki.hangman.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -26,7 +27,7 @@ public class NooseEntity extends Entity {
     }
 
     public NooseEntity(Level level, BlockPos pos) {
-        super(HangManCommon.NOOSE, level);
+        super(Registry.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
     }

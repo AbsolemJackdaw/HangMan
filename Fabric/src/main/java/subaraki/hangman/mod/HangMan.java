@@ -16,8 +16,6 @@ public class HangMan extends HangManCommon implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        NOOSE = HangManEntity.NOOSE;
-        CAMERA = HangManEntity.CAMERA;
         HangManBlock.register();
         HangManItem.register();
         ResourceManagerHelperImpl.get(PackType.SERVER_DATA).registerReloadListener(new EntityHangableListReaderFabricImpl());

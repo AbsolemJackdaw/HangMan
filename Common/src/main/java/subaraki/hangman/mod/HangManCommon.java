@@ -1,5 +1,6 @@
 package subaraki.hangman.mod;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +13,11 @@ public abstract class HangManCommon {
     public static final Logger LOG = LogManager.getLogger();
     public static final DamageSource HANGING = new DamageSourceHang("hanging");
 
-    public static EntityType<?> NOOSE; //abstracter to allow for Forge to use a modified version
-    public static EntityType<CameraPlayerOnNoose> CAMERA;
+    public static final String noose = "hang_dummy";
+    public static final String camera = "camera";
+
+    public static final ResourceLocation NOOSE = new ResourceLocation(MODID, noose);
+    public static final ResourceLocation CAMERA = new ResourceLocation(MODID, camera);
 
 
 }

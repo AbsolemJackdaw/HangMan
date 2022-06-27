@@ -45,32 +45,30 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
 
         ArrayList<JsonObject> theJsonFiles = Lists.newArrayList();
 
-        Collection<ResourceLocation> jsonfiles = resourceManager.listResources("noose_entities", (filename) -> filename.endsWith(".json"));
+        Collection<ResourceLocation> jsonfiles = resourceManager.listResources("noose_entities", (filename) -> filename.getPath().endsWith(".json")).keySet();
 
         List<Resource> jsons = new ArrayList<>();
 
         for (ResourceLocation resLoc : jsonfiles) {
-            try {
-                jsons.addAll(resourceManager.getResources(resLoc));
-            } catch (IOException e) {
-                HangManCommon.LOG.warn("************************************");
-                HangManCommon.LOG.warn("!*!*!*!*!");
-                HangManCommon.LOG.warn("resource {} couldn't be loaded", resLoc);
-                HangManCommon.LOG.warn(e.getMessage());
-            }
+            jsons.addAll(resourceManager.getResourceStack(resLoc));
         }
 
         Gson gson = new GsonBuilder().create();
 
         for (Resource res : jsons) {
-            InputStream stream = res.getInputStream();
+            try {
+                BufferedReader reader = res.openAsReader(); ;
+                JsonElement je = gson.fromJson(reader, JsonElement.class);
+                JsonObject json = je.getAsJsonObject();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            JsonElement je = gson.fromJson(reader, JsonElement.class);
-            JsonObject json = je.getAsJsonObject();
-
-            if (json.has("hangable")) {
-                theJsonFiles.add(json);
+                if (json.has("hangable")) {
+                    theJsonFiles.add(json);
+                }
+            } catch (IOException e) {
+                HangManCommon.LOG.warn("************************************");
+                HangManCommon.LOG.warn("!*!*!*!*!");
+                HangManCommon.LOG.warn("resource {} couldn't be loaded", res);
+                HangManCommon.LOG.warn(e.getMessage());
             }
         }
         return theJsonFiles;
