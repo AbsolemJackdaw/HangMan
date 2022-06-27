@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "hangman",
   "version": "${version}",
-  "name": "Example Mod",
+  "name": "Left Hanging",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
@@ -28,7 +28,7 @@
   "depends": {
     "fabricloader": ">=0.12",
     "fabric": "*",
-    "minecraft": "1.18.x",
+    "minecraft": "1.19",
     "java": ">=17"
   },
   "suggests": {

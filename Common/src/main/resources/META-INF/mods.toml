@@ -18,7 +18,7 @@ The noose can also be used as a trap to catch and kill mobs.
 [[dependencies.hangman]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[37,)" #mandatory
+    versionRange="[41,)" #mandatory
     ordering="NONE"
     side="BOTH"
 # Here's another dependency
@@ -26,6 +26,6 @@ The noose can also be used as a trap to catch and kill mobs.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18,)"
+    versionRange="[1.19,)"
     ordering="NONE"
     side="BOTH"
