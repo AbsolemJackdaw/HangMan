@@ -4,6 +4,13 @@ plugins {
     id 'idea'
 }
 
+//allprojects {
+//    repositories {
+//        maven { url 'https://jitpack.io' }
+//    }
+//}
+
+
 archivesBaseName = "${mod_name}-fabric-${minecraft_version}"
 
 dependencies {
@@ -12,6 +19,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation project(":Common")
+    //     implementation("com.github.LlamaLad7:MixinExtras:0.0.12")
+    //annotationProcessor("com.github.LlamaLad7:MixinExtras:0.0.12")
 }
 
 loom {

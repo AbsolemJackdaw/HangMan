@@ -1,14 +1,12 @@
 package subaraki.hangman.mod;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import subaraki.hangman.config.ConfigReader;
 import subaraki.hangman.registry.HangManBlock;
-import subaraki.hangman.registry.HangManEntity;
 import subaraki.hangman.registry.HangManItem;
 import subaraki.hangman.util.EntityHangableListReader;
 
@@ -18,7 +16,9 @@ public class HangMan extends HangManCommon implements ModInitializer {
     public void onInitialize() {
         HangManBlock.register();
         HangManItem.register();
-        ResourceManagerHelperImpl.get(PackType.SERVER_DATA).registerReloadListener(new EntityHangableListReaderFabricImpl());
+        //TODO find alternative to fabric.impl for resourcemanager
+        //fabric.impl has a tendency to crash Quilt
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new EntityHangableListReaderFabricImpl());
     }
 
     public static class EntityHangableListReaderFabricImpl extends EntityHangableListReader implements SimpleSynchronousResourceReloadListener {

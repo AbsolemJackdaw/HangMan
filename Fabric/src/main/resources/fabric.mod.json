@@ -18,6 +18,9 @@
     "main": [
       "subaraki.hangman.mod.HangMan"
     ],
+    "preLaunch": [
+      "subaraki.hangman.mod.HangManStartup"
+    ],
     "client": [
       "subaraki.hangman.mod.HangManClient"
     ]
