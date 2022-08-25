@@ -3,7 +3,7 @@
   "id": "hangman",
   "version": "${version}",
   "name": "Left Hanging",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.",
   "authors": [
     "Me!"
   ],
@@ -29,9 +29,9 @@
     "hangman.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12",
+    "fabricloader": ">=0.14",
     "fabric": "*",
-    "minecraft": "1.19",
+    "minecraft": "1.19.x",
     "java": ">=17"
   },
   "suggests": {

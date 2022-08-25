@@ -1,4 +1,5 @@
 {
+	"render_type": "cutout",
 	"textures": {
 		"texture": "hangman:block/noose",
 		"particle": "hangman:block/noose"

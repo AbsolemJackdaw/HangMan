@@ -15,7 +15,7 @@ public class HangMan extends HangManCommon {
     public HangMan() {
         HangManItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         HangManBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        HangManEntity.ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        HangManEntity.ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);

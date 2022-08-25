@@ -7,6 +7,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
+import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.mod.HangManCommon;
 
 @OnlyIn(Dist.CLIENT)
@@ -14,8 +15,8 @@ import subaraki.hangman.mod.HangManCommon;
 public class DontHitYourselfEvent {
 
     @SubscribeEvent
-    public static void clickEvent(InputEvent.ClickInputEvent event) {
-        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof CameraPlayerOnNoose)
+    public static void clickEvent(InputEvent.InteractionKeyMappingTriggered event) {
+        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof NooseEntity)
             event.setCanceled(true);
     }
 }
