@@ -17,5 +17,7 @@ public class HangManEntity {
     public static final EntityType<CameraPlayerOnNoose> CAMERA = Registry.register(Registry.ENTITY_TYPE, new ResourceLocation(HangManCommon.MODID, HangManCommon.camera),
             FabricEntityTypeBuilder.<CameraPlayerOnNoose>create(MobCategory.MISC, CameraPlayerOnNoose::new).dimensions(EntityDimensions.fixed(0.001F, 0.001F)).trackedUpdateRate(20).trackRangeBlocks(256).disableSummon().disableSaving().build());
 
-
+    public static void register() {
+        //classloader to init static final fields
+    }
 }
