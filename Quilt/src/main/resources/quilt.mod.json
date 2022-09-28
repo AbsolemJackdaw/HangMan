@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "quilt-example-mod",
+    "id": "hangman",
+    "version": "${version}",
+    "intermediate_mappings": "net.fabricmc:intermediary",
+
+    "name": "Left Hanging",
+    "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.",
+    "authors": [
+      "Absolem Jackdaw"
+    ],
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/left-hanging/",
+      "sources": "https://github.com/AbsolemJackdaw/HangMan"
+    },
+
+    "license": "GNU V3",
+    "icon": "assets/modid/icon.png",
+
+    "environment": "*",
+    "entrypoints": {
+      "main": [
+        "subaraki.hangman.mod.HangMan"
+      ],
+      "client": [
+        "subaraki.hangman.mod.HangManClient"
+      ]
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "version": "*"
+      },
+      {
+        "id": "quilt_base",
+        "version": "*"
+      },
+      {
+        "id": "minecraft",
+        "version": "1.19.x"
+      },
+      {
+        "id": "java",
+        "version": ">=17"
+      }
+    ]
+  },
+  "mixin": [
+    "hangman.mixins.json"
+  ]
+}

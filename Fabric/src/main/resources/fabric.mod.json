@@ -5,21 +5,18 @@
   "name": "Left Hanging",
   "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.",
   "authors": [
-    "Me!"
+    "Absolem Jackdaw"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/left-hanging/",
+    "sources": "https://github.com/AbsolemJackdaw/HangMan"
   },
-  "license": "CC0-1.0",
+  "license": "GNU V3",
   "icon": "assets/modid/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "subaraki.hangman.mod.HangMan"
-    ],
-    "preLaunch": [
-      "subaraki.hangman.mod.HangManStartup"
     ],
     "client": [
       "subaraki.hangman.mod.HangManClient"
@@ -33,9 +30,6 @@
     "fabric": "*",
     "minecraft": "1.19.x",
     "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }
   
