@@ -15,8 +15,9 @@ import subaraki.hangman.mod.HangManCommon;
 public class DontHitYourselfEvent {
 
     @SubscribeEvent
-    public static void clickEvent(InputEvent.InteractionKeyMappingTriggered event) {
+    public static void clickEvent(final InputEvent.InteractionKeyMappingTriggered event) {
         if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof NooseEntity)
             event.setCanceled(true);
     }
+
 }

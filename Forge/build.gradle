@@ -45,7 +45,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('runServer')
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Server'
             mods {
@@ -106,6 +106,7 @@ publishing {
 }
 task publishCurseForge(type: TaskPublishCurseForge) {
 
+    //TODO Make the api token not crash gradle if it's not present
     apiToken = "${api_token_paintings}"
 
     // The main file to upload

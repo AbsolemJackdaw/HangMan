@@ -3,6 +3,7 @@ package subaraki.hangman.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import subaraki.hangman.blocks.NooseBlock;
 import subaraki.hangman.mod.CommonConfigData;
@@ -27,7 +29,7 @@ public class NooseEntity extends Entity {
     }
 
     public NooseEntity(Level level, BlockPos pos) {
-        super(Registry.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
+        super(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
     }
@@ -44,12 +46,6 @@ public class NooseEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag tag) {
     }
 
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        // return NetworkHooks.getEntitySpawningPacket(this);
-        return new ClientboundAddEntityPacket(this);//TODO
-    }
-
     /*ridetick is only called when the entity is a rider, and not a vehicle. we use the general tick update method instead.*/
     @Override
     public void tick() {
@@ -61,7 +57,7 @@ public class NooseEntity extends Entity {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
                 BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
                 if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-                    level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+                    level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), Block.UPDATE_ALL);
                 }
                 this.kill(); //remove this entity
 
@@ -78,11 +74,6 @@ public class NooseEntity extends Entity {
         whenRemoved();
     }
 
-    @Override
-    public void kill() {
-        super.kill();
-    }
-
     /**
      * Called in {@link Entity#remove(RemovalReason)} to reset block's vacancy.
      * Do not call in Forge's onEntityRemovedFromWorld because it will cause a Concurrent Modification exception
@@ -91,7 +82,7 @@ public class NooseEntity extends Entity {
     public void whenRemoved() {
         BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
         if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), Block.UPDATE_ALL);
         }
     }
 
@@ -128,7 +119,6 @@ public class NooseEntity extends Entity {
     public void baseTick() {
         super.baseTick();
         if (!getPassengers().isEmpty()) {
-            boolean isUndead = false;
             for (Entity e : getPassengers()) {
                 if (e instanceof LivingEntity living) {
                     if (this.level.getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
@@ -139,8 +129,6 @@ public class NooseEntity extends Entity {
                         living.setYRot(dir.toYRot());
                     }
                     living.setXRot(45);
-                    isUndead = living.getMobType() == MobType.UNDEAD;
-
                 }
 
                 if (!e.hurtMarked &&

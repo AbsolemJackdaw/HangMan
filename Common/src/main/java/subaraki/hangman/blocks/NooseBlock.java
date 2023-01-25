@@ -114,37 +114,38 @@ public class NooseBlock extends Block {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        if (!player.isShiftKeyDown())
-            if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
+       if (!player.isShiftKeyDown()) {
+           if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
 
-                NooseEntity nooseEntity = new NooseEntity(level, pos);
-                level.addFreshEntity(nooseEntity);
-                player.startRiding(nooseEntity);
-                level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
+               NooseEntity nooseEntity = new NooseEntity(level, pos);
+               level.addFreshEntity(nooseEntity);
+               player.startRiding(nooseEntity);
+               level.setBlock(pos, state.setValue(OCCUPIED, true), Block.UPDATE_ALL);
 
-                BlockPos cameraPos =
-                        switch (state.getValue(FACING)) {
-                            case EAST -> pos.east(3).below(1);
-                            case WEST -> pos.west(3).below(1);
-                            case NORTH -> pos.north(3).below(1);
-                            case SOUTH -> pos.south(3).below(1);
-                            default -> pos.below(1).north(3);
-                        };
-                CameraPlayerOnNoose camera = new CameraPlayerOnNoose(level, pos);
-                camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY(), cameraPos.getZ() + 0.5);
-                camera.setXRot(-20f);
-                float yRotation = switch (state.getValue(FACING)) {
-                    case EAST -> 90;
-                    case WEST -> -90;
-                    case SOUTH -> 180;
-                    default -> 0;
-                };
-                camera.setYRot(yRotation);
-                level.addFreshEntity(camera);
-                serverPlayer.connection.send(new ClientboundSetCameraPacket(camera));
+               BlockPos cameraPos =
+                       switch (state.getValue(FACING)) {
+                           case EAST -> pos.east(3).below(1);
+                           case WEST -> pos.west(3).below(1);
+                           case NORTH -> pos.north(3).below(1);
+                           case SOUTH -> pos.south(3).below(1);
+                           default -> pos.below(1).north(3);
+                       };
+               CameraPlayerOnNoose camera = new CameraPlayerOnNoose(level, pos);
+               camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY(), cameraPos.getZ() + 0.5);
+               camera.setXRot(-20f);
+               float yRotation = switch (state.getValue(FACING)) {
+                   case EAST -> 90;
+                   case WEST -> -90;
+                   case SOUTH -> 180;
+                   default -> 0;
+               };
+               camera.setYRot(yRotation);
+               level.addFreshEntity(camera);
+               serverPlayer.connection.send(new ClientboundSetCameraPacket(camera));
 
-            }
-        return InteractionResult.SUCCESS;
+           }
+       }
+       return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -158,7 +159,7 @@ public class NooseBlock extends Block {
                     level.addFreshEntity(noose);
                     living.startRiding(noose);
                     noose.positionRider(living);
-                    level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
+                    level.setBlock(pos, state.setValue(OCCUPIED, true), Block.UPDATE_ALL);
                 }
             }
         }
