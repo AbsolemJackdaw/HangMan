@@ -7,7 +7,7 @@
     "intermediate_mappings": "net.fabricmc:intermediary",
 
     "name": "Left Hanging",
-    "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.",
+    "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.\nPorted to 1.20.1 by Duzo",
     "authors": [
       "Absolem Jackdaw"
     ],
@@ -39,7 +39,7 @@
       },
       {
         "id": "minecraft",
-        "version": "1.19.x"
+        "version": "1.20.1"
       },
       {
         "id": "java",

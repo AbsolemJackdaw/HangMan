@@ -1,5 +1,8 @@
 package subaraki.hangman.mod;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -21,8 +24,13 @@ public class HangMan extends HangManCommon {
         modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
         modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modConfig);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addToCreativeTabs);
+    }
 
-
+    public void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(HangManItems.NOOSE);
+        }
     }
 
     public void modConfig(ModConfigEvent event) {

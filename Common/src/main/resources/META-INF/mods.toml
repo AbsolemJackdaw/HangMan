@@ -14,6 +14,7 @@ description='''
 Left Hanging is a decorative mod themed for halloween.
 You can hang entities for decoration, or yourself if you wanted to.
 The noose can also be used as a trap to catch and kill mobs.
+Ported to 1.20.1 by Duzo
 '''
 [[dependencies.hangman]] #optional
     modId="forge" #mandatory
@@ -26,6 +27,6 @@ The noose can also be used as a trap to catch and kill mobs.
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.2,)"
+    versionRange="[1.20.1,)"
     ordering="NONE"
     side="BOTH"

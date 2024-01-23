@@ -1,11 +1,16 @@
 package subaraki.hangman.mod;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import subaraki.hangman.registry.HangManBlock;
 import subaraki.hangman.registry.HangManEntity;
 import subaraki.hangman.registry.HangManItem;
@@ -21,6 +26,10 @@ public class HangMan extends HangManCommon implements ModInitializer {
         //TODO find alternative to fabric.impl for resourcemanager
         //fabric.impl has a tendency to crash Quilt
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new EntityHangableListReaderFabricImpl());
+
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(content -> {
+            content.addAfter(Items.SPECTRAL_ARROW,HangManBlock.NOOSE); // bad
+        });
     }
 
     public static class EntityHangableListReaderFabricImpl extends EntityHangableListReader implements SimpleSynchronousResourceReloadListener {
