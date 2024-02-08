@@ -82,13 +82,14 @@ publishing {
 }
 task publishCurseForge(type: TaskPublishCurseForge) {
 
-    apiToken = "${api_token_paintings}"
+    // TODO - commented out because i dont have your API token
+    // apiToken = "${api_token_paintings}"
 
     // The main file to upload
-    def mainFile = upload(532595, jar)
-    mainFile.releaseType = 'release'
-    mainFile.changelog = "${changelog}"
-    mainFile.addModLoader('Fabric')
-    mainFile.changelogType = 'markdown'
-    mainFile.addRequirement('fabric-api')
+    // def mainFile = upload(532595, jar)
+    // mainFile.releaseType = 'release'
+    // mainFile.changelog = "${changelog}"
+    // mainFile.addModLoader('Fabric')
+    // mainFile.changelogType = 'markdown'
+    // mainFile.addRequirement('fabric-api')
 }

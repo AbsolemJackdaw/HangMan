@@ -27,8 +27,9 @@ public class HangManEntity {
 
     @SubscribeEvent
     public static void register(RegisterEvent event) {
-        if (event.getRegistryKey().equals(Registry.ENTITY_TYPE_REGISTRY)) {
-        }
+        // todo - this was an empty if statement causing issues, so i commented it out.
+        //if (event.getRegistryKey().equals(Registry.ENTITY_TYPE_REGISTRY)) {
+        //}
     }
 
 }
