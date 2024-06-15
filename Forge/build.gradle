@@ -114,4 +114,6 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.changelogType = 'markdown'
     mainFile.addGameVersion("${minecraft_version}")
     mainFile.addGameVersion("forge")
+    mainFile.addGameVersion("neoforge")
+
 }

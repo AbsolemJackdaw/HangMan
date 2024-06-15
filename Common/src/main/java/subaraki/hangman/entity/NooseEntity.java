@@ -2,7 +2,6 @@ package subaraki.hangman.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -28,7 +27,8 @@ public class NooseEntity extends Entity {
         super(type, level);
     }
 
-    public NooseEntity(Level level, BlockPos pos) {
+    public NooseEntity(Level level,
+                       BlockPos pos) {
         super(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
@@ -58,17 +58,17 @@ public class NooseEntity extends Entity {
         super.tick();
         //passenger (player) gets set immediatly on spawn.
         //so when this is empty, the player has unmounted.
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             if (this.getPassengers().isEmpty()) {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
-                BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
-                if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-                    level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+                BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
+                if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
+                    level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
                 }
                 this.kill(); //remove this entity
 
             }
-            if (!(this.level.getBlockState(getOnPos()).getBlock() instanceof NooseBlock))
+            if (!(this.level().getBlockState(getOnPos()).getBlock() instanceof NooseBlock))
                 kill();
         }
 
@@ -91,16 +91,16 @@ public class NooseEntity extends Entity {
      * when saving chunks. (on dimension leave or worl exit)
      */
     public void whenRemoved() {
-        BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
-        if (this.level.getBlockState(pos).getBlock() instanceof NooseBlock) {
-            level.setBlock(pos, level.getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
+        BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
+        if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
+            level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
         }
     }
 
     //used in Forge's shouldRiderSit method
     //used in Fabric to be used in mixin ref
     public boolean shouldHangedEntitySit() {
-        return !this.level.getBlockState(getOnPos().below(2)).isAir();
+        return !this.level().getBlockState(getOnPos().below(2)).isAir();
     }
 
     @Override
@@ -133,8 +133,8 @@ public class NooseEntity extends Entity {
             boolean isUndead = false;
             for (Entity e : getPassengers()) {
                 if (e instanceof LivingEntity living) {
-                    if (this.level.getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
-                        BlockState state = level.getBlockState(getOnPos());
+                    if (this.level().getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
+                        BlockState state = level().getBlockState(getOnPos());
                         Direction dir = state.getValue(NooseBlock.FACING);
                         living.setYBodyRot(dir.toYRot());
                         living.setYHeadRot(dir.toYRot());
@@ -158,8 +158,8 @@ public class NooseEntity extends Entity {
     @Override
     public void onPassengerTurned(Entity entity) {
         if (entity instanceof LivingEntity living) {
-            if (this.level.getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
-                BlockState state = level.getBlockState(getOnPos());
+            if (this.level().getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
+                BlockState state = level().getBlockState(getOnPos());
                 living.setYBodyRot(state.getValue(NooseBlock.FACING).toYRot());
                 living.setYHeadRot(living.yBodyRot);
                 living.setXRot(45);
