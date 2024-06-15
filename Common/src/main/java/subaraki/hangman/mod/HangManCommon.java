@@ -2,10 +2,8 @@ package subaraki.hangman.mod;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.util.DamageSourceHang;
 
 public abstract class HangManCommon {

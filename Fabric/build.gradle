@@ -85,7 +85,7 @@ task publishCurseForge(type: TaskPublishCurseForge) {
     apiToken = findProperty('cf_api_token')
 
     // The main file to upload
-    def mainFile = upload(532595, jar)
+    def mainFile = upload(532595, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
     mainFile.releaseType = "${releasetype}"
     mainFile.changelog = "${changelog}"
     mainFile.addModLoader('Fabric')
