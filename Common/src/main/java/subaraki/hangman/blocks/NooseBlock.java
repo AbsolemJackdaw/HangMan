@@ -107,7 +107,7 @@ public class NooseBlock extends Block {
     public BlockState updateShape(BlockState receivingState, Direction dir, BlockState fromState, LevelAccessor access, BlockPos receivingPos, BlockPos fromPos) {
         if (fromState.getBlock() instanceof NooseBlock && dir.equals(Direction.DOWN)) {
             return receivingState.setValue(ATTACHED, true);
-        } else if (fromState.isAir() && receivingState.getValue(ATTACHED))
+        } else if (fromState.isAir() && dir.equals(Direction.DOWN) && receivingState.getValue(ATTACHED))
             return receivingState.setValue(ATTACHED, false);
         return !canSurvive(receivingState, access, receivingPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(receivingState, dir, fromState, access, receivingPos, fromPos);
     }

@@ -4,6 +4,7 @@ package subaraki.hangman.util;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,7 +29,7 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
 
     public static EntityHangable get(EntityType<?> entityType) {
 
-        ResourceLocation resLoc = Registry.ENTITY_TYPE.getKey(entityType);
+        ResourceLocation resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         if (mappedEntities.containsKey(resLoc))
             return mappedEntities.get(resLoc);
 
@@ -36,7 +37,7 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
     }
 
     public static boolean has(EntityType<?> entityType) {
-        ResourceLocation resLoc = Registry.ENTITY_TYPE.getKey(entityType);
+        ResourceLocation resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         return mappedEntities.containsKey(resLoc);
     }
 

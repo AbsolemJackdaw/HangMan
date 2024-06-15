@@ -3,8 +3,10 @@ package subaraki.hangman.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +29,7 @@ public class NooseEntity extends Entity {
     }
 
     public NooseEntity(Level level, BlockPos pos) {
-        super(Registry.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
+        super(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
     }
@@ -45,7 +47,7 @@ public class NooseEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         // return NetworkHooks.getEntitySpawningPacket(this);
         return new ClientboundAddEntityPacket(this);//TODO
     }

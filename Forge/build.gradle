@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6+', changing: true
     }
 }
 
@@ -104,13 +104,14 @@ publishing {
         }
     }
 }
-task publishCurseForge(type: TaskPublishCurseForge) {
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
-    apiToken = "${api_token_paintings}"
-
+    apiToken = findProperty('cf_api_token')
     // The main file to upload
     def mainFile = upload(532595, jar)
-    mainFile.releaseType = 'release'
+    mainFile.releaseType = "${releasetype}"
     mainFile.changelog = "${changelog}"
     mainFile.changelogType = 'markdown'
+    mainFile.addGameVersion("${minecraft_version}")
+    mainFile.addGameVersion("forge")
 }

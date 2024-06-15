@@ -16,15 +16,8 @@ import subaraki.hangman.registry.HangManEntity;
 public class ClientSetupEvent {
 
     @SubscribeEvent
-    public static void clientsetup(FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(HangManBlocks.NOOSE.get(), RenderType.cutout());
-
-    }
-
-    @SubscribeEvent
     public static void reg(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(HangManEntity.HANG_DUMMY.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(HangManEntity.CAMERA.get(), EmptyEntityRenderer::new);
-
     }
 }

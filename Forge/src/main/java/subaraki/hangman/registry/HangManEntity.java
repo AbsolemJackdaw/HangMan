@@ -24,11 +24,4 @@ public class HangManEntity {
     public static final RegistryObject<EntityType<CameraPlayerOnNoose>> CAMERA = ENTITY_TYPES.register(HangManCommon.camera,
             () -> EntityType.Builder.<CameraPlayerOnNoose>of(CameraPlayerOnNoose::new, MobCategory.MISC)
                     .setTrackingRange(256).setUpdateInterval(20).noSave().noSummon().sized(0.001F, 0.001F).build(HangManCommon.camera));
-
-    @SubscribeEvent
-    public static void register(RegisterEvent event) {
-        if (event.getRegistryKey().equals(Registry.ENTITY_TYPE_REGISTRY)) {
-        }
-    }
-
 }
