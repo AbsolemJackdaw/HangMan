@@ -1,97 +1,37 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
-    id 'maven-publish'
-    id 'idea'
-    id 'net.darkhax.curseforgegradle' version '1.0.11'
+    id 'multiloader-loader'
+    id 'fabric-loom'
 }
-
-repositories {
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-}
-
-
-archivesBaseName = "${mod_name}-fabric-${minecraft_version}"
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation project(":Common")
 }
 
 loom {
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
     runs {
         client {
             client()
-            setConfigName("Fabric Client")
+            setConfigName('Fabric Client')
             ideConfigGenerated(true)
-            runDir("run")
+            runDir('runs/client')
         }
         server {
             server()
-            setConfigName("Fabric Server")
+            setConfigName('Fabric Server')
             ideConfigGenerated(true)
-            runDir("run")
+            runDir('runs/server')
         }
     }
-}
-
-
-processResources {
-    from project(":Common").sourceSets.main.resources
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${mod_name}" }
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
-    }
-}
-task publishCurseForge(type: TaskPublishCurseForge) {
-
-    apiToken = findProperty('cf_api_token')
-
-    // The main file to upload
-    def mainFile = upload(532595, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-    mainFile.releaseType = "${releasetype}"
-    mainFile.changelog = "${changelog}"
-    mainFile.addModLoader('Fabric')
-    mainFile.changelogType = 'markdown'
-    mainFile.addRequirement('fabric-api')
-    mainFile.addGameVersion("${minecraft_version}")
-    mainFile.addGameVersion("fabric")
-    mainFile.addGameVersion("quilt")
 }

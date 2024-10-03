@@ -112,9 +112,9 @@ public class NooseBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!player.isShiftKeyDown())
-            if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && hand == InteractionHand.MAIN_HAND) {
+            if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && player.getUsedItemHand() == InteractionHand.MAIN_HAND) {
 
                 NooseEntity nooseEntity = new NooseEntity(level, pos);
                 level.addFreshEntity(nooseEntity);

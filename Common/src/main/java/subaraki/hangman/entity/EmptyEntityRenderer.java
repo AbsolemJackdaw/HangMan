@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 
 public class EmptyEntityRenderer extends EntityRenderer<Entity> {
 
-    private static final ResourceLocation empty = new ResourceLocation("");
+    private static final ResourceLocation empty = ResourceLocation.withDefaultNamespace("");
 
     public EmptyEntityRenderer(EntityRendererProvider.Context context) {
         super(context);

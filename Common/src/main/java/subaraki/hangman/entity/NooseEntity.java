@@ -8,11 +8,13 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,10 +37,6 @@ public class NooseEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-    }
-
-    @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
     }
 
@@ -47,9 +45,8 @@ public class NooseEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        // return NetworkHooks.getEntitySpawningPacket(this);
-        return new ClientboundAddEntityPacket(this);//TODO
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity pEntity) {
+        return new ClientboundAddEntityPacket(this, pEntity); //super.getAddEntityPacket(pEntity);
     }
 
     /*ridetick is only called when the entity is a rider, and not a vehicle. we use the general tick update method instead.*/
@@ -85,6 +82,11 @@ public class NooseEntity extends Entity {
         super.kill();
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
+    }
+
     /**
      * Called in {@link Entity#remove(RemovalReason)} to reset block's vacancy.
      * Do not call in Forge's onEntityRemovedFromWorld because it will cause a Concurrent Modification exception
@@ -101,17 +103,6 @@ public class NooseEntity extends Entity {
     //used in Fabric to be used in mixin ref
     public boolean shouldHangedEntitySit() {
         return !this.level().getBlockState(getOnPos().below(2)).isAir();
-    }
-
-    @Override
-    public double getPassengersRidingOffset() {
-        if (!this.getPassengers().isEmpty()) {
-            Entity e = this.getPassengers().get(0);
-            if (!(e instanceof Player) && EntityHangableListReader.has(e.getType()))
-                return -e.getEyeHeight() + EntityHangableListReader.get(e.getType()).offset();
-        }
-
-        return -1.42D;
     }
 
     @Override
@@ -141,7 +132,7 @@ public class NooseEntity extends Entity {
                         living.setYRot(dir.toYRot());
                     }
                     living.setXRot(45);
-                    isUndead = living.getMobType() == MobType.UNDEAD;
+                    isUndead = living.getType().is(EntityTypeTags.UNDEAD);
 
                 }
 

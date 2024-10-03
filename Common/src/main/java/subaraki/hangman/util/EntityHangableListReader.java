@@ -95,7 +95,7 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
                         if (jsonObject.has("takesDamage")) {
                             dmg = jsonObject.get("takesDamage").getAsBoolean();
                         }
-                        mappedEntities.put(new ResourceLocation(entity), new EntityHangable(entity, offset, dmg));
+                        mappedEntities.put(ResourceLocation.parse(entity), new EntityHangable(entity, offset, dmg));
                     }
                 }
             };

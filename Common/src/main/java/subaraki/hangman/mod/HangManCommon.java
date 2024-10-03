@@ -14,8 +14,8 @@ public abstract class HangManCommon {
     public static final String noose = "hang_dummy";
     public static final String camera = "camera";
 
-    public static final ResourceLocation NOOSE = new ResourceLocation(MODID, noose);
-    public static final ResourceLocation CAMERA = new ResourceLocation(MODID, camera);
+    public static final ResourceLocation NOOSE = ResourceLocation.fromNamespaceAndPath(MODID, noose);
+    public static final ResourceLocation CAMERA = ResourceLocation.fromNamespaceAndPath(MODID, camera);
 
 
 }
