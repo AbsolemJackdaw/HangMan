@@ -1,30 +1,35 @@
 package subaraki.hangman.mod;
 
 import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.IModBusEvent;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import subaraki.hangman.registry.HangManBlocks;
 import subaraki.hangman.registry.HangManEntity;
 import subaraki.hangman.registry.HangManItems;
 
-@net.neoforged.fml.common.Mod(HangManCommon.MODID)
+@Mod(HangManCommon.MODID)
 public class HangMan extends HangManCommon {
 
-    public HangMan() {
-        HangManItems.ITEMS.register(JavaModLoadingContext.get().getModEventBus());
-        HangManBlocks.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        HangManEntity.ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public HangMan(ModContainer container, IEventBus eventBus) {
+        HangManItems.ITEMS.register(eventBus);
+        HangManBlocks.BLOCKS.register(eventBus);
+        HangManEntity.ENTITY_TYPES.register(eventBus);
 
-        ModLoadingContext modLoadingContext = ModLoadingContext.get();
-        modLoadingContext.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
-        modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modConfig);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addToCreativeTab);
+        container.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
+        container.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
+        eventBus.addListener(this::modConfig);
+        eventBus.addListener(this::addToCreativeTab);
     }
 
     public void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
-            event.accept(HangManItems.NOOSE);
+            event.accept(HangManItems.NOOSE.get());
         }
     }
 

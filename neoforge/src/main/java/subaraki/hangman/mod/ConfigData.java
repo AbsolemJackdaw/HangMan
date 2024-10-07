@@ -1,23 +1,23 @@
 package subaraki.hangman.mod;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ConfigData extends CommonConfigData {
 
     public static final ServerConfig SERVER;
-    public static final ForgeConfigSpec SERVER_SPEC;
+    public static final ModConfigSpec SERVER_SPEC;
     public static final ClientConfig CLIENT;
-    public static final ForgeConfigSpec CLIENT_SPEC;
+    public static final ModConfigSpec CLIENT_SPEC;
 
     static {
-        final Pair<ServerConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
+        final Pair<ServerConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ServerConfig::new);
         SERVER_SPEC = specPair.getRight();
         SERVER = specPair.getLeft();
     }
 
     static {
-        final Pair<ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+        final Pair<ClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
         CLIENT_SPEC = specPair.getRight();
         CLIENT = specPair.getLeft();
     }
@@ -36,12 +36,12 @@ public class ConfigData extends CommonConfigData {
 
     public static class ServerConfig {
 
-        public final ForgeConfigSpec.IntValue playerHurtDamage;
-        public final ForgeConfigSpec.IntValue entityHurtDamage;
-        public final ForgeConfigSpec.BooleanValue canHurtEntity;
-        public final ForgeConfigSpec.BooleanValue canHurtPlayer;
+        public final ModConfigSpec.IntValue playerHurtDamage;
+        public final ModConfigSpec.IntValue entityHurtDamage;
+        public final ModConfigSpec.BooleanValue canHurtEntity;
+        public final ModConfigSpec.BooleanValue canHurtPlayer;
 
-        ServerConfig(ForgeConfigSpec.Builder builder) {
+        ServerConfig(ModConfigSpec.Builder builder) {
 
             builder.push("general");
             playerHurtDamage = builder.comment("how much dmg the player receives when on a noose").defineInRange("playerHurtDamage", 0, 0, 20);
@@ -54,7 +54,7 @@ public class ConfigData extends CommonConfigData {
 
     public static class ClientConfig {
 
-        ClientConfig(ForgeConfigSpec.Builder builder) {
+        ClientConfig(ModConfigSpec.Builder builder) {
 
         }
     }

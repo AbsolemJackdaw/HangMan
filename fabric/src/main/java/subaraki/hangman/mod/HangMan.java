@@ -25,7 +25,7 @@ public class HangMan extends HangManCommon implements ModInitializer {
         //fabric.impl has a tendency to crash Quilt
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new EntityHangableListReaderFabricImpl());
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(content -> {
-            content.addAfter(Items.SPECTRAL_ARROW, HangManBlock.NOOSE); // bad
+            content.addAfter(() -> Items.SPECTRAL_ARROW, HangManBlock.NOOSE::asItem); // bad
         });
     }
 
@@ -34,7 +34,7 @@ public class HangMan extends HangManCommon implements ModInitializer {
         //no need to add more code here, this'll do the job and call the parent's class
         @Override
         public ResourceLocation getFabricId() {
-            return new ResourceLocation(HangManCommon.MODID, "resource_reloader");
+            return ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, "resource_reloader");
         }
 
         @Override
