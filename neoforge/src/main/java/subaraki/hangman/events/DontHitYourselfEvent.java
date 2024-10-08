@@ -11,7 +11,7 @@ import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.mod.HangManCommon;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class DontHitYourselfEvent {
 
     @SubscribeEvent

@@ -13,11 +13,13 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import subaraki.hangman.blocks.NooseBlock;
 import subaraki.hangman.mod.CommonConfigData;
 import subaraki.hangman.mod.HangManCommon;
@@ -58,7 +60,7 @@ public class NooseEntity extends Entity {
         if (!level().isClientSide()) {
             if (this.getPassengers().isEmpty()) {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
-                BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
+                BlockPos pos = BlockPos.containing(this.position());
                 if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
                     level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
                 }
@@ -90,10 +92,11 @@ public class NooseEntity extends Entity {
     /**
      * Called in {@link Entity#remove(RemovalReason)} to reset block's vacancy.
      * Do not call in Forge's onEntityRemovedFromWorld because it will cause a Concurrent Modification exception
-     * when saving chunks. (on dimension leave or worl exit)
+     * when saving chunks. (on dimension leave or world exit)
      */
     public void whenRemoved() {
-        BlockPos pos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
+        var posZ = this.getZ();
+        var pos = BlockPos.containing(this.position());
         if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
             level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
         }
@@ -121,7 +124,6 @@ public class NooseEntity extends Entity {
     public void baseTick() {
         super.baseTick();
         if (!getPassengers().isEmpty()) {
-            boolean isUndead = false;
             for (Entity e : getPassengers()) {
                 if (e instanceof LivingEntity living) {
                     if (this.level().getBlockState(getOnPos()).getBlock() instanceof NooseBlock) {
@@ -132,8 +134,6 @@ public class NooseEntity extends Entity {
                         living.setYRot(dir.toYRot());
                     }
                     living.setXRot(45);
-                    isUndead = living.getType().is(EntityTypeTags.UNDEAD);
-
                 }
 
                 if (!e.hurtMarked &&
@@ -156,5 +156,28 @@ public class NooseEntity extends Entity {
                 living.setXRot(45);
             }
         }
+    }
+
+    @Override
+    public boolean dismountsUnderwater() {
+        return false;
+    }
+
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
+        var pos = BlockPos.containing(this.position());
+        var isAirUnder = this.level().getBlockState(pos.below()).isAir();
+        return isAirUnder ? position().add(0, -1, 0) : position();
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity pEntity, EntityDimensions pDimensions, float pPartialTick) {
+        var y = -1.42;
+        if (!this.getPassengers().isEmpty()) {
+            Entity e = this.getPassengers().getFirst();
+            if (!(e instanceof Player) && EntityHangableListReader.has(e.getType()))
+                y = -e.getEyeHeight() + EntityHangableListReader.get(e.getType()).offset();
+        }
+        return new Vec3(0, y, 0);
     }
 }

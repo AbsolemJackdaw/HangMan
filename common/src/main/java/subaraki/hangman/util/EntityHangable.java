@@ -1,6 +1,7 @@
 package subaraki.hangman.util;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public record EntityHangable(String entitytype, double offset, boolean takesDamage) {
     @Override
@@ -10,7 +11,7 @@ public record EntityHangable(String entitytype, double offset, boolean takesDama
 
     @Override
     public double offset() {
-        return offset;
+        return Optional.ofNullable(offset).orElse(-1.42D);
     }
 
     @Override

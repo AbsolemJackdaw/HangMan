@@ -2,16 +2,17 @@
   "hangable": [
     {
       "entity": "minecraft:skeleton",
-      "offset": "0.5",
+      "offset": "0.6",
       "takesDamage": false
     },
     {
       "entity": "minecraft:zombie",
+      "offset": "0.6",
       "takesDamage": false
     },
     {
       "entity": "minecraft:enderman",
-      "offset": "-0.1"
+      "offset": "-0.2"
     },
     {
       "entity": "minecraft:creeper",
@@ -19,17 +20,17 @@
     },
     {
       "entity": "minecraft:wither_skeleton",
-      "offset": "0.6",
+      "offset": "0.8",
       "takesDamage": false
     },
     {
       "entity": "minecraft:husk",
-      "offset": "0.25",
+      "offset": "0.5",
       "takesDamage": false
     },
     {
       "entity": "minecraft:stray",
-      "offset": "0.5",
+      "offset": "0.6",
       "takesDamage": false
     },
     {
@@ -46,27 +47,35 @@
     },
     {
       "entity": "minecraft:witch",
-      "offset": "0.30"
+      "offset": "-0.15"
     },
     {
-      "entity": "minecraft:evoker"
+      "entity": "minecraft:evoker",
+      "offset": "0.5"
     },
     {
-      "entity": "minecraft:pillager"
+      "entity": "minecraft:pillager",
+      "offset": "0.5"
     },
     {
-      "entity": "minecraft:vindicator"
+      "entity": "minecraft:vindicator",
+      "offset": "0.5"
     },
     {
       "entity": "minecraft:vex",
       "offset": "-0.25"
     },
     {
-      "entity": "minecraft:piglin"
+      "entity": "minecraft:piglin",
+      "offset": "0.65"
+    },
+    {
+      "entity": "minecraft:zombified_piglin",
+      "offset": "0.65"
     },
     {
       "entity": "minecraft:piglin_brute",
-      "offset": "0.25"
+      "offset": "0.65"
     },
     {
       "entity": "minecraft:blaze",
@@ -74,6 +83,17 @@
     },
     {
       "entity": "minecraft:drowned",
+      "offset": "0.6",
+      "takesDamage": false
+    },
+    {
+      "entity": "minecraft:bee",
+      "offset": "-0.1",
+      "takesDamage": false
+    },
+    {
+      "entity": "minecraft:snow_golem",
+      "offset": "0.1",
       "takesDamage": false
     }
   ]

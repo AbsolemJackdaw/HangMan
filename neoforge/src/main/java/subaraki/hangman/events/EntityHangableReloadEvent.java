@@ -10,7 +10,7 @@ import subaraki.hangman.util.EntityHangableListReader;
 
 import java.util.HashMap;
 
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class EntityHangableReloadEvent {
 
     private static final HashMap<ResourceLocation, EntityHangable> mappedEntities = new HashMap<>();

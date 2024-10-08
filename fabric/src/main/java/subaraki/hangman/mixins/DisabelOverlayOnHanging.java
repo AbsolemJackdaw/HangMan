@@ -1,6 +1,7 @@
 package subaraki.hangman.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +15,7 @@ import subaraki.hangman.entity.NooseEntity;
 public class DisabelOverlayOnHanging {
 
     @Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
-    public void haltRender(GuiGraphics guiGraphics, float f, CallbackInfo ci) {
+    public void haltRender(GuiGraphics guiGraphics, DeltaTracker f, CallbackInfo ci) {
         if (Minecraft.getInstance().player.getVehicle() instanceof NooseEntity noose) {
             ci.cancel();
         }

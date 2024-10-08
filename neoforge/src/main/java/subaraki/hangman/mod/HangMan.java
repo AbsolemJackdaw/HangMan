@@ -16,7 +16,7 @@ import subaraki.hangman.registry.HangManItems;
 @Mod(HangManCommon.MODID)
 public class HangMan extends HangManCommon {
 
-    public HangMan(ModContainer container, IEventBus eventBus) {
+    public HangMan(IEventBus eventBus, ModContainer container) {
         HangManItems.ITEMS.register(eventBus);
         HangManBlocks.BLOCKS.register(eventBus);
         HangManEntity.ENTITY_TYPES.register(eventBus);

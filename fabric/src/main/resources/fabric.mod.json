@@ -1,19 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "hangman",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Left Hanging",
-  "description": "Left Hanging is a decorative mod themed for halloween.\nYou can hang entities for decoration, or yourself if you wanted to.\nThe noose can also be used as a trap to catch and kill mobs.",
+  "name": "${mod_name}",
+  "description": "${description}",
   "authors": [
-    "Absolem Jackdaw",
-    "Duzos [1.19.3,1.20.1 port]"
+    "${mod_author}"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/left-hanging/",
     "sources": "https://github.com/AbsolemJackdaw/HangMan"
   },
-  "license": "GNU V3",
-  "icon": "assets/modid/icon.png",
+  "license": "${license}",
+  "icon": "${mod_id}.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -24,13 +23,13 @@
     ]
   },
   "mixins": [
-    "hangman.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15",
-    "fabric": ">=0.92",
-    "minecraft": "1.20.1",
-    "java": ">=17"
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=${java_version}"
   }
 }
   
