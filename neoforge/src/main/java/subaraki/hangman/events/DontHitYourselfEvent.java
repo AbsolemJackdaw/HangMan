@@ -5,9 +5,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.InputEvent;
-import subaraki.hangman.entity.NooseEntity;
+import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.mod.HangManCommon;
 
 @OnlyIn(Dist.CLIENT)
@@ -16,7 +15,7 @@ public class DontHitYourselfEvent {
 
     @SubscribeEvent
     public static void clickEvent(InputEvent.InteractionKeyMappingTriggered event) {
-        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof NooseEntity)
+        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof CameraPlayerOnNoose)
             event.setCanceled(true);
     }
 }

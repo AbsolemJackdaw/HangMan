@@ -5,7 +5,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
-import subaraki.hangman.entity.NooseEntity;
+import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.mod.HangManCommon;
 
 @EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
@@ -13,7 +13,7 @@ public class HandHideEvent {
 
     @SubscribeEvent
     public static void renderHandEvent(RenderHandEvent event) {
-        if ((Minecraft.getInstance().getCameraEntity() instanceof NooseEntity)) {
+        if ((Minecraft.getInstance().getCameraEntity() instanceof CameraPlayerOnNoose)) {
             event.setCanceled(true);
         }
     }
