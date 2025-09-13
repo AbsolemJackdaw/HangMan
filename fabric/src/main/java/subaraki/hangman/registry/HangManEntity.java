@@ -1,9 +1,9 @@
 package subaraki.hangman.registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -13,13 +13,15 @@ import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.mod.HangManCommon;
 
 public class HangManEntity {
-    public static final EntityType<NooseEntity> NOOSE = Registry.register(BuiltInRegistries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, HangManCommon.noose),
-            FabricEntityTypeBuilder.<NooseEntity>create(MobCategory.MISC, NooseEntity::new).dimensions(EntityDimensions.fixed(0.001F, 0.001F)).trackedUpdateRate(20).trackRangeBlocks(256).disableSummon().build());
+    public static final EntityType<NooseEntity> NOOSE = Registry.register(BuiltInRegistries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, HangManCommon.NOOSE_ENTITY_STR),
+            FabricEntityTypeBuilder.<NooseEntity>create(MobCategory.MISC, NooseEntity::new).dimensions(EntityDimensions.fixed(0.001F, 0.001F)).trackedUpdateRate(20).trackRangeBlocks(256).disableSummon().build(HangManCommon.ENTITY_NOOSE_KEY));
 
-    public static final EntityType<CameraPlayerOnNoose> CAMERA = Registry.register(BuiltInRegistries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, HangManCommon.camera),
-            FabricEntityTypeBuilder.<CameraPlayerOnNoose>create(MobCategory.MISC, CameraPlayerOnNoose::new).dimensions(EntityDimensions.fixed(0.001F, 0.001F)).trackedUpdateRate(20).trackRangeBlocks(256).disableSummon().disableSaving().build());
+    public static final EntityType<CameraPlayerOnNoose> CAMERA = Registry.register(BuiltInRegistries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, HangManCommon.CAMERA_ENTITY_STR),
+            FabricEntityTypeBuilder.<CameraPlayerOnNoose>create(MobCategory.MISC, CameraPlayerOnNoose::new).dimensions(EntityDimensions.fixed(0.001F, 0.001F)).trackedUpdateRate(20).trackRangeBlocks(256).disableSummon().disableSaving().build(HangManCommon.ENTITY_CAMERA_KEY));
 
     public static void register() {
         //classloader to init static final fields
     }
+
+
 }

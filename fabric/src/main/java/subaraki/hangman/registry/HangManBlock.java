@@ -10,6 +10,6 @@ public class HangManBlock {
     public static final NooseBlock NOOSE = new NooseBlock();
 
     public static void register() {
-        Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, "noose"), NOOSE);
+        Registry.registerForHolder(BuiltInRegistries.BLOCK, HangManCommon.BLOCK_KEY, NOOSE);
     }
 }

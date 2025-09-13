@@ -2,16 +2,21 @@ package subaraki.hangman.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import subaraki.hangman.blocks.NooseBlock;
 import subaraki.hangman.mod.CommonConfigData;
 import subaraki.hangman.mod.HangManCommon;
@@ -31,9 +37,8 @@ public class NooseEntity extends Entity {
         super(type, level);
     }
 
-    public NooseEntity(Level level,
-                       BlockPos pos) {
-        super(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
+    public NooseEntity(EntityType type, Level level, BlockPos pos) {
+        super(type, level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
     }
@@ -58,17 +63,18 @@ public class NooseEntity extends Entity {
         //passenger (player) gets set immediatly on spawn.
         //so when this is empty, the player has unmounted.
         if (!level().isClientSide()) {
+            ServerLevel serverLevel = (ServerLevel) this.level();
             if (this.getPassengers().isEmpty()) {
                 //set log block to unoccupied so we can spawn a new entity and sit back down
                 BlockPos pos = BlockPos.containing(this.position());
                 if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
                     level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
                 }
-                this.kill(); //remove this entity
+                this.kill(serverLevel); //remove this entity
 
             }
             if (!(this.level().getBlockState(getOnPos()).getBlock() instanceof NooseBlock))
-                kill();
+                kill(serverLevel);
         }
 
     }
@@ -80,8 +86,8 @@ public class NooseEntity extends Entity {
     }
 
     @Override
-    public void kill() {
-        super.kill();
+    public void kill(ServerLevel level) {
+        super.kill(level);
     }
 
     @Override
@@ -95,7 +101,6 @@ public class NooseEntity extends Entity {
      * when saving chunks. (on dimension leave or world exit)
      */
     public void whenRemoved() {
-        var posZ = this.getZ();
         var pos = BlockPos.containing(this.position());
         if (this.level().getBlockState(pos).getBlock() instanceof NooseBlock) {
             level().setBlock(pos, level().getBlockState(pos).setValue(NooseBlock.OCCUPIED, false), 3);
@@ -145,6 +150,11 @@ public class NooseEntity extends Entity {
         }
     }
 
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+        return false;
+    }
+
     //this method is needed or you get spasm galore for players
     @Override
     public void onPassengerTurned(Entity entity) {
@@ -179,5 +189,20 @@ public class NooseEntity extends Entity {
                 y = -e.getEyeHeight() + EntityHangableListReader.get(e.getType()).offset();
         }
         return new Vec3(0, y, 0);
+    }
+
+    @Override
+    public <T> T getOrDefault(DataComponentType<? extends T> component, T defaultValue) {
+        return super.getOrDefault(component, defaultValue);
+    }
+
+    @Override
+    public @Nullable <T> TypedDataComponent<T> getTyped(DataComponentType<T> component) {
+        return super.getTyped(component);
+    }
+
+    @Override
+    public Component getFeedbackDisplayName() {
+        return super.getFeedbackDisplayName();
     }
 }

@@ -2,37 +2,37 @@ package subaraki.hangman.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSetCameraPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.entity.NooseEntity;
+import subaraki.hangman.mod.HangManCommon;
 import subaraki.hangman.util.EntityHangableListReader;
 
 public class NooseBlock extends Block {
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty ATTACHED = BlockStateProperties.ATTACHED;
 
     protected static final VoxelShape SHAPE_ATTACHED = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
@@ -45,7 +45,7 @@ public class NooseBlock extends Block {
     protected static final VoxelShape COLLISION_SIDE = Block.box(7.0D, -1.0D, 5.0D, 9.0D, 6.0D, 11.0D);
 
     public NooseBlock() {
-        super(Properties.of().noOcclusion().strength(1.0f).sound(SoundType.WOOL).isValidSpawn(NooseBlock::never).isRedstoneConductor(NooseBlock::never).isSuffocating(NooseBlock::never).isViewBlocking(NooseBlock::never));
+        super(Properties.of().setId(HangManCommon.BLOCK_KEY).noOcclusion().strength(1.0f).sound(SoundType.WOOL).isValidSpawn(NooseBlock::never).isRedstoneConductor(NooseBlock::never).isSuffocating(NooseBlock::never).isViewBlocking(NooseBlock::never));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OCCUPIED, false).setValue(ATTACHED, false));
     }
 
@@ -103,12 +103,13 @@ public class NooseBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState receivingState, Direction dir, BlockState fromState, LevelAccessor access, BlockPos receivingPos, BlockPos fromPos) {
-        if (fromState.getBlock() instanceof NooseBlock && dir.equals(Direction.DOWN)) {
+    protected BlockState updateShape(BlockState receivingState, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos receivingPos, Direction direction, BlockPos fromPos, BlockState fromState, RandomSource random) {
+        if (fromState.getBlock() instanceof NooseBlock && direction.equals(Direction.DOWN)) {
             return receivingState.setValue(ATTACHED, true);
-        } else if (fromState.isAir() && dir.equals(Direction.DOWN) && receivingState.getValue(ATTACHED))
+        } else if (fromState.isAir() && direction.equals(Direction.DOWN) && receivingState.getValue(ATTACHED))
             return receivingState.setValue(ATTACHED, false);
-        return !canSurvive(receivingState, access, receivingPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(receivingState, dir, fromState, access, receivingPos, fromPos);
+        return !canSurvive(receivingState, level, receivingPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(receivingState, level, scheduledTickAccess, receivingPos, direction, fromPos, fromState, random);
+
     }
 
     @Override
@@ -116,7 +117,7 @@ public class NooseBlock extends Block {
         if (!player.isShiftKeyDown())
             if (player instanceof ServerPlayer serverPlayer && !state.getValue(OCCUPIED) && player.getUsedItemHand() == InteractionHand.MAIN_HAND) {
 
-                NooseEntity nooseEntity = new NooseEntity(level, pos);
+                NooseEntity nooseEntity = new NooseEntity(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE).get().value(), level, pos);
                 level.addFreshEntity(nooseEntity);
                 player.startRiding(nooseEntity);
                 level.setBlock(pos, state.setValue(OCCUPIED, true), 3);
@@ -129,7 +130,7 @@ public class NooseBlock extends Block {
                             case SOUTH -> pos.south(3).below(1);
                             default -> pos.below(1).north(3);
                         };
-                CameraPlayerOnNoose camera = new CameraPlayerOnNoose(level, pos);
+                CameraPlayerOnNoose camera = new CameraPlayerOnNoose(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.CAMERA).get().value(), level, pos);
                 camera.setPos(cameraPos.getX() + 0.5, cameraPos.getY(), cameraPos.getZ() + 0.5);
                 camera.setXRot(-20f);
                 float yRotation = switch (state.getValue(FACING)) {
@@ -147,11 +148,11 @@ public class NooseBlock extends Block {
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
         if (!level.isClientSide()) {
             if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityHangableListReader.has(entity.getType())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED) && !state.getValue(ATTACHED)) {
-                    NooseEntity noose = new NooseEntity(level, pos);
+                    NooseEntity noose = new NooseEntity(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE).get().value(), level, pos);
                     if (living instanceof Mob mob && !mob.isPersistenceRequired())
                         mob.setPersistenceRequired();
                     level.addFreshEntity(noose);

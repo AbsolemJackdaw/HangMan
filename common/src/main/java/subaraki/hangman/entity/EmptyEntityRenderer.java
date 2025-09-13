@@ -3,13 +3,11 @@ package subaraki.hangman.entity;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.Entity;
 
 
-public class EmptyEntityRenderer extends EntityRenderer<Entity> {
-
-    private static final ResourceLocation empty = ResourceLocation.withDefaultNamespace("");
+public class EmptyEntityRenderer extends EntityRenderer<Entity, EntityRenderState> {
 
     public EmptyEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -21,7 +19,7 @@ public class EmptyEntityRenderer extends EntityRenderer<Entity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Entity entity) {
-        return empty;
+    public EntityRenderState createRenderState() {
+        return new EntityRenderState();
     }
 }

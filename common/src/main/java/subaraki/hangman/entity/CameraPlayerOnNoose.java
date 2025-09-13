@@ -1,17 +1,17 @@
 package subaraki.hangman.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import subaraki.hangman.mod.HangManCommon;
+import org.jetbrains.annotations.Nullable;
 
 public class CameraPlayerOnNoose extends Entity {
 
@@ -19,8 +19,8 @@ public class CameraPlayerOnNoose extends Entity {
         super(type, level);
     }
 
-    public CameraPlayerOnNoose(Level level, BlockPos pos) {
-        super(BuiltInRegistries.ENTITY_TYPE.get(HangManCommon.NOOSE), level);
+    public CameraPlayerOnNoose(EntityType type, Level level, BlockPos pos) {
+        super(type, level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         this.noPhysics = true;
     }
@@ -28,6 +28,11 @@ public class CameraPlayerOnNoose extends Entity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
+        return false;
     }
 
     @Override
@@ -48,4 +53,18 @@ public class CameraPlayerOnNoose extends Entity {
     }
 
 
+    @Override
+    public <T> T getOrDefault(DataComponentType<? extends T> component, T defaultValue) {
+        return super.getOrDefault(component, defaultValue);
+    }
+
+    @Override
+    public @Nullable <T> TypedDataComponent<T> getTyped(DataComponentType<T> component) {
+        return super.getTyped(component);
+    }
+
+    @Override
+    public Component getFeedbackDisplayName() {
+        return super.getFeedbackDisplayName();
+    }
 }

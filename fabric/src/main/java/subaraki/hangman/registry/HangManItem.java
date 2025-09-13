@@ -10,6 +10,6 @@ import subaraki.hangman.mod.HangManCommon;
 public class HangManItem {
 
     public static void register() {
-        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, "noose"), new BlockItem(HangManBlock.NOOSE, new Item.Properties()));
+        Registry.register(BuiltInRegistries.ITEM, HangManCommon.ITEM_KEY, new BlockItem(HangManBlock.NOOSE, new Item.Properties().setId(HangManCommon.ITEM_KEY)));
     }
 }
