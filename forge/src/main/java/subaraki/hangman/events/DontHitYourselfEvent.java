@@ -16,7 +16,7 @@ public class DontHitYourselfEvent {
 
     @SubscribeEvent
     public static void clickEvent(InputEvent.InteractionKeyMappingTriggered event) {
-        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof NooseEntity)
+        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof CameraPlayerOnNoose)
             event.setCanceled(true);
     }
 }
