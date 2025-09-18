@@ -95,6 +95,15 @@
       "entity": "minecraft:snow_golem",
       "offset": "0.1",
       "takesDamage": false
+    },
+    {
+      "entity": "minecraft:bogged",
+      "offset": "0.6",
+      "takesDamage": false
+    },
+    {
+      "entity": "minecraft:breeze",
+      "offset": "-0.1"
     }
   ]
 }

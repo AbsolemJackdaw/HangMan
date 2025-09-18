@@ -39,13 +39,13 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
-tasks.register('publishCurseForge', TaskPublishCurseForge) {
+tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
 
     apiToken = findProperty('cf_api_token')
     // The main file to upload
     def mainFile = upload(532595, jar)
+//    def mainFile = upload(532595, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
+    mainFile.displayName = "Left Hanging-neo-${minecraft_version}-${version}"
     mainFile.releaseType = "${releasetype}"
     mainFile.changelog = "${changelog}"
     mainFile.changelogType = 'markdown'
