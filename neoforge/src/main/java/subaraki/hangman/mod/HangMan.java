@@ -22,8 +22,7 @@ public class HangMan extends HangManCommon {
         container.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
         container.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
         eventBus.addListener(this::modConfig);
-        eventBus.addListener(this::addToCreativeTab);
-    }
+     }
 
     public void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
