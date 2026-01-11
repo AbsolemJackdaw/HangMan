@@ -8,7 +8,7 @@ import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import subaraki.hangman.entity.NooseEntity;
 import subaraki.hangman.mod.HangManCommon;
 
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HangManCommon.MODID, value = Dist.CLIENT)
 public class DisableGuiOnHang {
 
     @SubscribeEvent

@@ -4,7 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -33,8 +33,8 @@ public class HangMan extends HangManCommon implements ModInitializer {
 
         //no need to add more code here, this'll do the job and call the parent's class
         @Override
-        public ResourceLocation getFabricId() {
-            return ResourceLocation.fromNamespaceAndPath(HangManCommon.MODID, "resource_reloader");
+        public Identifier getFabricId() {
+            return Identifier.fromNamespaceAndPath(HangManCommon.MODID, "resource_reloader");
         }
 
         @Override

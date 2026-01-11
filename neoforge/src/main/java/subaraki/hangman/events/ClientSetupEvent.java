@@ -8,7 +8,7 @@ import subaraki.hangman.entity.EmptyEntityRenderer;
 import subaraki.hangman.mod.HangManCommon;
 import subaraki.hangman.registry.HangManEntity;
 
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HangManCommon.MODID, value = Dist.CLIENT)
 public class ClientSetupEvent {
 
     @SubscribeEvent

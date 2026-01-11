@@ -16,7 +16,7 @@ import subaraki.hangman.entity.NooseEntity;
 @Mixin(HumanoidMobRenderer.class)
 public class EntitySitOrHangOnNoose {
 
-    @Inject(method = "Lnet/minecraft/client/renderer/entity/HumanoidMobRenderer;extractHumanoidRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FLnet/minecraft/client/renderer/item/ItemModelResolver;)V",
+    @Inject(method = "extractHumanoidRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FLnet/minecraft/client/renderer/item/ItemModelResolver;)V",
             at = @At(value = "TAIL"))
     private static void insert(LivingEntity entity, HumanoidRenderState reusedState, float partialTick, ItemModelResolver itemModelResolver, CallbackInfo ci) {
         if (entity.isPassenger() && entity.getVehicle() instanceof NooseEntity noose) {

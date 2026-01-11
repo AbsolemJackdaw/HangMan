@@ -148,7 +148,7 @@ public class NooseBlock extends Block {
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
         if (!level.isClientSide()) {
             if (entity instanceof LivingEntity living && !(entity instanceof Player) && EntityHangableListReader.has(entity.getType())) {
                 if (state.getBlock() instanceof NooseBlock && !state.getValue(OCCUPIED) && !state.getValue(ATTACHED)) {

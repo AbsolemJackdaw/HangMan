@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -24,6 +25,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import subaraki.hangman.blocks.NooseBlock;
@@ -41,14 +44,6 @@ public class NooseEntity extends Entity {
         super(type, level);
         this.setPos(pos.getX() + 0.5, pos.getY() + 0.35, pos.getZ() + 0.5);
         this.noPhysics = true;
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
     }
 
     @Override
@@ -141,10 +136,8 @@ public class NooseEntity extends Entity {
                     living.setXRot(45);
                 }
 
-                if (!e.hurtMarked &&
-                        ((CommonConfigData.canHurtPlayer && e instanceof Player ||
-                                CommonConfigData.canHurtEntity && EntityHangableListReader.has(e.getType()) && EntityHangableListReader.get(e.getType()).takesDamage()))) {
-                    e.hurt(HangManCommon.HANGING, e instanceof Player ? CommonConfigData.playerDMG : CommonConfigData.entityDMG);
+                if (!e.hurtMarked && ((CommonConfigData.canHurtPlayer && e instanceof Player || CommonConfigData.canHurtEntity && EntityHangableListReader.has(e.getType()) && EntityHangableListReader.get(e.getType()).takesDamage()))) {
+                    e.hurt(HangManCommon.hangDmg(level()), e instanceof Player ? CommonConfigData.playerDMG : CommonConfigData.entityDMG);
                 }
             }
         }
@@ -153,6 +146,16 @@ public class NooseEntity extends Entity {
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float v) {
         return false;
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput valueInput) {
+
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+
     }
 
     //this method is needed or you get spasm galore for players

@@ -20,9 +20,8 @@ public class HangMan extends HangManCommon {
         HangManEntity.ENTITY_TYPES.register(eventBus);
 
         container.registerConfig(ModConfig.Type.SERVER, ConfigData.SERVER_SPEC);
-        container.registerConfig(ModConfig.Type.CLIENT, ConfigData.CLIENT_SPEC);
         eventBus.addListener(this::modConfig);
-     }
+    }
 
     public void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
@@ -30,11 +29,9 @@ public class HangMan extends HangManCommon {
         }
     }
 
-    public void modConfig(ModConfigEvent event) {
+    public void modConfig(ModConfigEvent.Reloading event) {
         ModConfig config = event.getConfig();
-        if (config.getSpec() == ConfigData.CLIENT_SPEC)
-            ConfigData.refreshClient();
-        else if (config.getSpec() == ConfigData.SERVER_SPEC)
+        if (config.getSpec() == ConfigData.SERVER_SPEC)
             ConfigData.refreshServer();
     }
 }

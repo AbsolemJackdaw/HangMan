@@ -1,0 +1,7 @@
+{
+  "message_id": "death.attack.hanging",
+  "scaling": "always",
+  "exhaustion": 0.1,
+  "effects": "thorns",
+  "death_message_type": "default"
+}

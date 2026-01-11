@@ -3,9 +3,8 @@ package subaraki.hangman.util;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -16,8 +15,6 @@ import subaraki.hangman.mod.HangManCommon;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,11 +22,11 @@ import java.util.List;
 
 public class EntityHangableListReader extends SimplePreparableReloadListener<ArrayList<JsonObject>> {
 
-    private static final HashMap<ResourceLocation, EntityHangable> mappedEntities = new HashMap<>();
+    private static final HashMap<Identifier, EntityHangable> mappedEntities = new HashMap<>();
 
     public static EntityHangable get(EntityType<?> entityType) {
 
-        ResourceLocation resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+        Identifier resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         if (mappedEntities.containsKey(resLoc))
             return mappedEntities.get(resLoc);
 
@@ -37,7 +34,7 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
     }
 
     public static boolean has(EntityType<?> entityType) {
-        ResourceLocation resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+        Identifier resLoc = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         return mappedEntities.containsKey(resLoc);
     }
 
@@ -46,11 +43,11 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
 
         ArrayList<JsonObject> theJsonFiles = Lists.newArrayList();
 
-        Collection<ResourceLocation> jsonfiles = resourceManager.listResources("noose_entities", (filename) -> filename.getPath().endsWith(".json")).keySet();
+        Collection<Identifier> jsonfiles = resourceManager.listResources("noose_entities", (filename) -> filename.getPath().endsWith(".json")).keySet();
 
         List<Resource> jsons = new ArrayList<>();
 
-        for (ResourceLocation resLoc : jsonfiles) {
+        for (Identifier resLoc : jsonfiles) {
             jsons.addAll(resourceManager.getResourceStack(resLoc));
         }
 
@@ -95,7 +92,7 @@ public class EntityHangableListReader extends SimplePreparableReloadListener<Arr
                         if (jsonObject.has("takesDamage")) {
                             dmg = jsonObject.get("takesDamage").getAsBoolean();
                         }
-                        mappedEntities.put(ResourceLocation.parse(entity), new EntityHangable(entity, offset, dmg));
+                        mappedEntities.put(Identifier.parse(entity), new EntityHangable(entity, offset, dmg));
                     }
                 }
             };

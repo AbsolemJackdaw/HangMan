@@ -2,7 +2,6 @@ package subaraki.hangman.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import subaraki.hangman.blocks.NooseBlock;
 import subaraki.hangman.mod.HangManCommon;
 

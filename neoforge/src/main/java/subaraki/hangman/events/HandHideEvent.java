@@ -8,7 +8,7 @@ import net.neoforged.neoforge.client.event.RenderHandEvent;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.mod.HangManCommon;
 
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HangManCommon.MODID, value = Dist.CLIENT)
 public class HandHideEvent {
 
     @SubscribeEvent

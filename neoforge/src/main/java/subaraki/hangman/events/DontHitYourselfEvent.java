@@ -9,13 +9,12 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import subaraki.hangman.entity.CameraPlayerOnNoose;
 import subaraki.hangman.mod.HangManCommon;
 
-@OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = HangManCommon.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = HangManCommon.MODID, value = Dist.CLIENT)
 public class DontHitYourselfEvent {
 
     @SubscribeEvent
     public static void clickEvent(InputEvent.InteractionKeyMappingTriggered event) {
-        if (event.isAttack() && Minecraft.getInstance().cameraEntity instanceof CameraPlayerOnNoose)
+        if (event.isAttack() && Minecraft.getInstance().getCameraEntity() instanceof CameraPlayerOnNoose)
             event.setCanceled(true);
     }
 }

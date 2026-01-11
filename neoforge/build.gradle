@@ -2,6 +2,7 @@ plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
     id 'net.darkhax.curseforgegradle' version '1.0.11'
+    id 'com.modrinth.minotaur'
 }
 
 neoForge {
@@ -40,15 +41,25 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
-
+    dependsOn(tasks.build)
     apiToken = findProperty('cf_api_token')
-    // The main file to upload
-    def mainFile = upload(532595, jar)
-//    def mainFile = upload(532595, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-    mainFile.displayName = "Left Hanging-neo-${minecraft_version}-${version}"
+    def mainFile = upload(cf_project, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
+    mainFile.displayName = "${mod_name}-neo-${minecraft_version}-${version}"
     mainFile.releaseType = "${releasetype}"
     mainFile.changelog = "${changelog}"
     mainFile.changelogType = 'markdown'
     mainFile.addGameVersion("${minecraft_version}")
+    mainFile.addJavaVersion('Java 21')
     mainFile.addGameVersion("neoforge")
+}
+
+modrinth {
+    token.set(project.findProperty('modrinth_api_token'))
+    projectId.set(modrinth_project)
+    changelog = "${changelog}"
+    versionName.set("${mod_name}-NeoForge-${minecraft_version}-$version")
+    versionType.set("${releasetype}")
+    uploadFile.set(tasks.jar)
+    loaders = ["neoforge"]
+    gameVersions = ["${minecraft_version}"]
 }

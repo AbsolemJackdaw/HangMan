@@ -7,23 +7,11 @@ public class ConfigData extends CommonConfigData {
 
     public static final ServerConfig SERVER;
     public static final ModConfigSpec SERVER_SPEC;
-    public static final ClientConfig CLIENT;
-    public static final ModConfigSpec CLIENT_SPEC;
 
     static {
         final Pair<ServerConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ServerConfig::new);
         SERVER_SPEC = specPair.getRight();
         SERVER = specPair.getLeft();
-    }
-
-    static {
-        final Pair<ClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
-        CLIENT_SPEC = specPair.getRight();
-        CLIENT = specPair.getLeft();
-    }
-
-    public static void refreshClient() {
-
     }
 
     public static void refreshServer() {
@@ -49,13 +37,6 @@ public class ConfigData extends CommonConfigData {
             canHurtPlayer = builder.comment("Are players damaged ?").define("canHurtPlayer", false);
             canHurtEntity = builder.comment("Are entities damaged ? (omits the data pack rule 'takesDamage'").define("canHurtEntity", false);
             builder.pop();
-        }
-    }
-
-    public static class ClientConfig {
-
-        ClientConfig(ModConfigSpec.Builder builder) {
-
         }
     }
 }
